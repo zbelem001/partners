@@ -1,0 +1,66 @@
+@use "sass:color";
+
+/* Variables Couleurs 2iE (Institutionnel) */
+:root {
+  --primary-red: #ff5400;    /* Orange/Rouge vibrant */
+  --primary-green: #2ec4b6;  /* Teal/Vert moderne */
+  --primary-yellow: #ffbd00; /* Jaune chaud */
+  --primary-blue: #003566;   /* Bleu profond */
+  --primary-color: var(--primary-blue); /* Alias pour compatibilité */
+  
+  --text-dark: #003566;      /* Bleu nuit pour le texte (lisible mais pas noir) */
+  --text-light: #5d7a8c;     /* Gris-bleu doux */
+  --bg-light: #f8f9fa;
+  --bg-cream: #f2e8cf;       /* Beige/Crème pour les sections */
+  --white: #FFFFFF;
+}
+
+/* Reset & Base */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Poppins', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  color: var(--text-dark);
+  background-color: var(--bg-light);
+  line-height: 1.6;
+}
+
+/* Utilitaires basiques pour le minimalisme */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.btn {
+  display: inline-block;
+  padding: 12px 30px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+
+  &.btn-primary {
+    background-color: var(--primary-red);
+    color: var(--white);
+    &:hover {
+      background-color: color.adjust(#ff5400, $lightness: -10%);
+    }
+  }
+
+  &.btn-outline {
+    border: 2px solid var(--primary-blue);
+    color: var(--primary-blue);
+    background: transparent;
+    &:hover {
+      background-color: var(--primary-blue);
+      color: var(--white);
+    }
+  }
+}

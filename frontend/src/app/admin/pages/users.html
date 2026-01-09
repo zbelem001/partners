@@ -1,0 +1,120 @@
+<div class="users-page">
+  
+  <div class="page-header">
+    <div class="header-left">
+      <h1>Gestion des Utilisateurs</h1>
+      <p>Administrez les accès et les rôles de la plateforme</p>
+    </div>
+    <div class="header-right">
+      <div class="search-box">
+        <input type="text" placeholder="Rechercher un utilisateur...">
+      </div>
+      <button class="btn btn-primary" (click)="openModal()">+ Nouvel Utilisateur</button>
+    </div>
+  </div>
+
+  <div class="notification-success" *ngIf="notificationMessage">
+    <span class="checkmark">✔</span> {{ notificationMessage }}
+  </div>
+
+  <div class="table-container">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Nom & Email</th>
+          <th>Rôle</th>
+          <th>Département</th>
+          <th>Statut</th>
+          <th>Dernière Connexion</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users">
+          <td>
+            <div class="user-info">
+              <span class="name">{{ user.firstName }} {{ user.lastName }}</span>
+              <span class="email">{{ user.email }}</span>
+            </div>
+          </td>
+          <td>
+            <span class="badge" [ngClass]="getRoleBadge(user.role)">{{ user.role }}</span>
+          </td>
+          <td>{{ user.department }}</td>
+          <td>
+            <span class="status-dot" [class.active]="user.status === 'Active'"></span>
+            {{ user.status }}
+          </td>
+          <td class="text-muted">{{ user.lastLogin | date:'medium' }}</td>
+          <td>
+            <div class="actions">
+              <button class="btn-icon edit" title="Modifier" (click)="editUser(user)">✎</button>
+              <button class="btn-icon delete" title="Supprimer" (click)="deleteUser(user.id)">🗑</button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- MODAL -->
+  <div class="modal-overlay" *ngIf="showModal" (click)="closeModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>{{ isEditing ? 'Modifier Utilisateur' : 'Nouvel Utilisateur' }}</h3>
+        <button class="close-btn" (click)="closeModal()">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Numéro Matricule / ID Employé</label>
+          <input type="text" [(ngModel)]="newUser.employeeId" placeholder="ID Employé">
+        </div>
+        <div class="form-group">
+          <label>Prénom</label>
+          <input type="text" [(ngModel)]="newUser.firstName" (ngModelChange)="updateEmailSuggestion()" placeholder="Prénom">
+        </div>
+         <div class="form-group">
+          <label>Nom</label>
+          <input type="text" [(ngModel)]="newUser.lastName" (ngModelChange)="updateEmailSuggestion()" placeholder="Nom">
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" [(ngModel)]="newUser.email" list="emailSuggestions" placeholder="Email professionnel">
+          <datalist id="emailSuggestions">
+             <option *ngFor="let email of suggestedEmails" [value]="email"></option>
+          </datalist>
+        </div>
+        <div class="form-group">
+          <label>Rôle</label>
+          <select [(ngModel)]="newUser.role">
+            <option value="User">Utilisateur</option>
+            <option value="Manager">Manager</option>
+            <option value="Direction">Direction</option>
+            <option value="Admin">Administrateur</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Département</label>
+          <input type="text" [(ngModel)]="newUser.department" placeholder="Sélectionner ou saisir..." list="departmentOptions">
+          <datalist id="departmentOptions">
+            <option *ngFor="let dept of departments" [value]="dept"></option>
+          </datalist>
+        </div>
+        <div class="form-group">
+          <label>Mot de passe</label>
+          <input type="text" [(ngModel)]="newUser.password" placeholder="Mot de passe">
+          <small *ngIf="!isEditing" style="color: grey; font-size: 0.8rem;">Généré par défaut: BZ2026P00</small>
+          <small *ngIf="isEditing" style="color: grey; font-size: 0.8rem;">Laissez vide pour conserver le mot de passe actuel</small>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" (click)="closeModal()">Annuler</button>
+        <button class="btn btn-primary" (click)="saveUser()">{{ isEditing ? 'Mettre à jour' : 'Créer Utilisateur' }}</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="loading-overlay" *ngIf="isLoading">
+    <div class="spinner"></div>
+  </div>
+</div>

@@ -1,0 +1,30 @@
+<header class="main-header">
+  <div class="container header-content">
+    <div class="logo">
+      <img src="logo2ie.png" alt="Logo 2iE" class="header-logo-img">
+      <span><span class="logo-red">2iE</span> PARTENARIATS</span>
+    </div>
+    <nav class="nav-links">
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Accueil</a>
+      <a routerLink="/about">L'Institut</a>
+      <a routerLink="/partners">Nos Partenaires</a>
+      <a routerLink="/contact">Contact</a>
+    </nav>
+    <div class="header-actions">
+      <!-- Use 'as user' pattern for cleaner subscription handling -->
+      <ng-container *ngIf="authService.currentUser$ | async as user; else guestBlock">
+        <span class="user-greeting">Bonjour, {{ user.name }}</span>
+        
+        <a *ngIf="showDashboard(user.role)" 
+           routerLink="/admin/dashboard" class="btn-text">Dashboard</a>
+           
+        <button (click)="authService.logout()" class="btn btn-outline sm">Déconnexion</button>
+      </ng-container>
+
+      <ng-template #guestBlock>
+        <a routerLink="/login" class="btn-text">Se connecter</a>
+        <a routerLink="/register" class="btn btn-primary sm">Devenir Partenaire</a>
+      </ng-template>
+    </div>
+  </div>
+</header>
