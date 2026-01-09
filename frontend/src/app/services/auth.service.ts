@@ -69,10 +69,12 @@ export class AuthService {
   }
 
   private redirectBasedOnRole(role: string) {
-    if (['Admin', 'Manager', 'Direction'].includes(role)) {
+    if (role === 'Admin') {
       this.router.navigate(['/admin/dashboard']);
+    } else if (['User', 'Manager', 'SRECIP', 'DFC', 'CAQ', 'Direction', 'DG'].includes(role)) {
+      this.router.navigate(['/workspace']);
     } else {
-      // Role 'User' (Personnel) or others -> Public Interface
+      // Fallback
       this.router.navigate(['/']);
     }
   }

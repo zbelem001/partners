@@ -1,35 +1,53 @@
 <div class="admin-container">
   <aside class="sidebar">
     <div class="sidebar-header">
-      <h2>2iE ADMIN</h2>
+      <h2>ESPACE 2iE</h2>
     </div>
     <nav class="sidebar-nav">
+      
+      <!-- COMMON FOR ALL STAFF -->
       <a routerLink="/admin/dashboard" routerLinkActive="active">
         Tableau de bord
       </a>
+      
+      <!-- PROSPECTS: Maybe limited? Let's say Everyone can see for now, or just Manager+ -->
       <a routerLink="/admin/prospects" routerLinkActive="active">
         Gestion Prospects
       </a>
+
+      <!-- PARTNERS: Everyone needs to consult -->
       <a routerLink="/admin/partners" routerLinkActive="active">
         Répertoire Partenaires
       </a>
+
+      <!-- CONVENTIONS: Everyone needs to consult/manage their own -->
       <a routerLink="/admin/conventions" routerLinkActive="active">
         Conventions
       </a>
+
+      <!-- ACTIVITIES: Everyone needs to manage their tasks -->
       <a routerLink="/admin/activities" routerLinkActive="active">
         Suivi Activités
       </a>
+
+      <!-- DOCS: Everyone needs access -->
       <a routerLink="/admin/documents" routerLinkActive="active">
         Bibliothèque
       </a>
+
+      <!-- REPORTS: Maybe limited? Let's keep it for now -->
       <a routerLink="/admin/reports" routerLinkActive="active">
         Rapports
       </a>
-      <a routerLink="/admin/users" routerLinkActive="active">
+
+      <!-- USERS: STRICTLY ADMIN -->
+      <a routerLink="/admin/users" routerLinkActive="active" *ngIf="isAdmin">
         Utilisateurs
       </a>
+
       <div class="divider"></div>
-      <a routerLink="/login" class="logout-link">
+      <!-- Use AuthService logout -->
+      <a (click)="authService.logout()" class="logout-link" style="cursor: pointer;">
         Déconnexion
       </a>
     </nav>
@@ -38,9 +56,9 @@
   <main class="main-content">
     <header class="top-bar">
       <div class="user-info">
-        <span class="role">Administrateur</span>
+        <span class="role">{{ authService.getCurrentUserRole() }}</span>
         <a routerLink="/admin/profile" class="name-link">
-          <span class="name">Adama Ouedraogo</span>
+          <span class="name">{{ authService.getUserName() }}</span>
         </a>
       </div>
     </header>

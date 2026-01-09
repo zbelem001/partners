@@ -14,6 +14,7 @@ export class Header {
   constructor(public authService: AuthService) {}
 
   showDashboard(role: string): boolean {
-    return ['Admin', 'Manager', 'Direction'].includes(role);
+    // Show 'Dashboard' link for all internal staff
+    return ['Admin', 'Manager', 'Direction', 'User', 'SRECIP', 'DFC', 'CAQ'].includes(role);
   }
 }
