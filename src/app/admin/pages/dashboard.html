@@ -5,61 +5,23 @@
   </div>
 
   <div class="stats-grid">
-    <div class="stat-card">
+    <div class="stat-card" *ngFor="let stat of stats" [ngClass]="stat.type">
       <div class="stat-content">
-        <span class="stat-label">Total Demandes</span>
-        <span class="stat-value">124</span>
+        <span class="stat-label">{{ stat.label }}</span>
+        <span class="stat-value">{{ stat.value }}</span>
       </div>
-      <div class="stat-trend">+12% ce mois</div>
-    </div>
-
-    <div class="stat-card warning">
-      <div class="stat-content">
-        <span class="stat-label">En Attente</span>
-        <span class="stat-value">18</span>
-      </div>
-      <div class="stat-trend">Nécessite action</div>
-    </div>
-
-    <div class="stat-card success">
-      <div class="stat-content">
-        <span class="stat-label">Partenariats Actifs</span>
-        <span class="stat-value">86</span>
-      </div>
-      <div class="stat-trend">Validés</div>
-    </div>
-
-    <div class="stat-card danger">
-      <div class="stat-content">
-        <span class="stat-label">Refusés</span>
-        <span class="stat-value">20</span>
-      </div>
-      <div class="stat-trend">Dossiers clos</div>
+      <div class="stat-trend">{{ stat.trend }}</div>
     </div>
   </div>
 
   <div class="recent-activity">
     <h3>Activités Récentes</h3>
     <div class="activity-list">
-      <div class="activity-item">
-        <div class="dot orange"></div>
+      <div class="activity-item" *ngFor="let activity of activities">
+        <div class="dot" [ngClass]="getActivityColor(activity.type)"></div>
         <div class="activity-details">
-          <span class="title">Nouvelle demande - Entreprise A</span>
-          <span class="time">Il y a 2 heures</span>
-        </div>
-      </div>
-      <div class="activity-item">
-        <div class="dot green"></div>
-        <div class="activity-details">
-          <span class="title">Partenariat validé - ONG B</span>
-          <span class="time">Hier, 14:30</span>
-        </div>
-      </div>
-      <div class="activity-item">
-        <div class="dot blue"></div>
-        <div class="activity-details">
-          <span class="title">Mise à jour dossier - Université C</span>
-          <span class="time">08 Jan 2026</span>
+          <span class="title">{{ activity.title }}</span>
+          <span class="time">{{ activity.time }}</span>
         </div>
       </div>
     </div>

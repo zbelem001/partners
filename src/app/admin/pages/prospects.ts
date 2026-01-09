@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 interface Prospect {
   id: string;
@@ -13,7 +14,7 @@ interface Prospect {
 @Component({
   selector: 'app-prospects',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './prospects.html',
   styleUrl: './prospects.scss',
 })

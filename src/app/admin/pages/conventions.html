@@ -1,0 +1,53 @@
+<div class="conventions-page">
+  <div class="page-header">
+    <div class="header-left">
+      <h1>Gestion des Conventions</h1>
+      <p>Suivez le cycle de vie de vos accords, de la rédaction à la signature.</p>
+    </div>
+    <div class="header-right">
+      <button class="btn btn-primary">Nouvelle Convention</button>
+    </div>
+  </div>
+
+  <div class="table-container">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Référence</th>
+          <th>Partenaire</th>
+          <th>Type d'Accord</th>
+          <th>Dates</th>
+          <th>Progression</th>
+          <th>Statut</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let conv of conventions" class="clickable-row" [routerLink]="['/admin/conventions', conv.id]">
+          <td><span class="ref-cell">{{ conv.ref }}</span></td>
+          <td class="partner-cell">{{ conv.partnerName }}</td>
+          <td>{{ conv.type }}</td>
+          <td>
+            <div class="date-col">
+              <span>{{ conv.startDate }}</span>
+              <span class="arrow">→</span>
+              <span>{{ conv.endDate }}</span>
+            </div>
+          </td>
+          <td>
+            <div class="progress-bar">
+              <div class="fill" [style.width.%]="conv.progress"></div>
+            </div>
+            <span class="progress-text">{{ conv.progress }}%</span>
+          </td>
+          <td>
+            <span class="badge" [ngClass]="getStatusBadge(conv.status)">{{ conv.status }}</span>
+          </td>
+          <td (click)="$event.stopPropagation()">
+            <button class="btn-icon" [routerLink]="['/admin/conventions', conv.id]">Gérer</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,120 @@
+<div class="partner-detail-page" *ngIf="partner">
+  
+  <!-- Header Section -->
+  <div class="header-card">
+    <div class="header-top">
+      <div class="breadcrumbs">
+        <a routerLink="/admin/partners">Partenaires</a> / <span>{{ partner.code }}</span>
+      </div>
+      <span class="status-badge" [class.success]="partner.status === 'Actif'">{{ partner.status }}</span>
+    </div>
+    
+    <div class="header-main">
+      <div class="item-icon-placeholder">{{ partner.name.substring(0,1) }}</div>
+      <div class="title-block">
+        <h1>{{ partner.name }}</h1>
+        <p class="subtitle">{{ partner.classification }} • Depuis le {{ partner.since }}</p>
+      </div>
+      <div class="actions">
+        <button class="btn btn-primary">Nouvelle Convention</button>
+      </div>
+    </div>
+
+    <div class="tabs-nav">
+      <button class="tab-item" [class.active]="activeTab === 'overview'" (click)="setActiveTab('overview')">Vue d'ensemble</button>
+      <button class="tab-item" [class.active]="activeTab === 'conventions'" (click)="setActiveTab('conventions')">Historique & Conventions</button>
+      <button class="tab-item" [class.active]="activeTab === 'notes'" (click)="setActiveTab('notes')">Notes & Suivi</button>
+    </div>
+  </div>
+
+  <!-- Content Section -->
+  <div class="content-area">
+    
+    <!-- OVERVIEW TAB -->
+    <div class="tab-content" *ngIf="activeTab === 'overview'">
+      <div class="grid-2">
+        <div class="card">
+          <h3>Informations Générales</h3>
+          <div class="kv-list">
+            <div class="kv-item">
+              <span class="label">Secteur</span>
+              <span class="value">{{ partner.generalInfo.sector }}</span>
+            </div>
+            <div class="kv-item">
+              <span class="label">Siège Social</span>
+              <span class="value">{{ partner.generalInfo.headquarters }}</span>
+            </div>
+            <div class="kv-item">
+              <span class="label">Site Web</span>
+              <a [href]="'https://' + partner.generalInfo.website" target="_blank" class="value link">{{ partner.generalInfo.website }}</a>
+            </div>
+            <div class="kv-item">
+              <span class="label">Chiffre d'affaires</span>
+              <span class="value">{{ partner.generalInfo.revenue }}</span>
+            </div>
+            <div class="kv-item">
+              <span class="label">Effectif</span>
+              <span class="value">{{ partner.generalInfo.employeeCount }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Contacts Clés</h3>
+          <div class="contacts-list">
+            <div class="contact-card" *ngFor="let contact of partner.contacts">
+              <div class="role">{{ contact.role }}</div>
+              <div class="name">{{ contact.name }}</div>
+              <div class="meta">{{ contact.email }}</div>
+              <div class="meta">{{ contact.phone }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONVENTIONS TAB -->
+    <div class="tab-content" *ngIf="activeTab === 'conventions'">
+      <div class="card full-width">
+        <h3>Conventions & Accords</h3>
+        <table class="simple-table">
+          <thead>
+            <tr>
+              <th>Réf</th>
+              <th>Intitulé</th>
+              <th>Date Signature</th>
+              <th>Expiration</th>
+              <th>Statut</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let conv of partner.conventions">
+              <td>{{ conv.id }}</td>
+              <td class="bold">{{ conv.title }}</td>
+              <td>{{ conv.signDate }}</td>
+              <td>{{ conv.expireDate }}</td>
+              <td><span class="mini-badge" [class.active]="conv.status === 'Active'">{{ conv.status }}</span></td>
+              <td><a href="#">Voir</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- NOTES TAB -->
+    <div class="tab-content" *ngIf="activeTab === 'notes'">
+      <div class="timeline">
+        <div class="timeline-item" *ngFor="let item of partner.interactions">
+          <div class="date">{{ item.date }}</div>
+          <div class="content">
+            <span class="type">{{ item.type }}</span>
+            <p>{{ item.note }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>

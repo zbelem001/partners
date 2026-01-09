@@ -1,0 +1,126 @@
+<div class="detail-page" *ngIf="prospect">
+  
+  <div class="page-header">
+    <div class="header-content">
+      <div class="breadcrumbs">
+        <a routerLink="/admin/prospects">Prospects</a> / <span>{{ prospect.id }}</span>
+      </div>
+      <div class="title-row">
+        <h1>{{ prospect.structure.name }}</h1>
+        <span class="status-badge" [ngClass]="prospect.status">{{ prospect.status }}</span>
+      </div>
+      <p class="meta">Soumis le {{ prospect.submissionDate }}</p>
+    </div>
+    <div class="header-actions">
+      <button class="btn btn-outline btn-danger" (click)="initiateReject()">Refuser</button>
+      <button class="btn btn-primary" (click)="approve()">Valider le Partenariat</button>
+    </div>
+  </div>
+
+  <div class="detail-grid">
+    
+    <!-- Column 1: Structure & Contact -->
+    <div class="col-left">
+      <section class="card">
+        <h3>Informations Structure</h3>
+        <div class="kv-list">
+          <div class="kv-item">
+            <span class="label">Type</span>
+            <span class="value">{{ prospect.structure.type }}</span>
+          </div>
+          <div class="kv-item">
+            <span class="label">Secteur</span>
+            <span class="value">{{ prospect.structure.sector }}</span>
+          </div>
+          <div class="kv-item">
+            <span class="label">Pays</span>
+            <span class="value">{{ prospect.structure.country }}</span>
+          </div>
+          <div class="kv-item">
+            <span class="label">Site Web</span>
+            <span class="value"><a [href]="'https://' + prospect.structure.website" target="_blank">{{ prospect.structure.website }}</a></span>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h3>Contacts</h3>
+        <div class="contact-box">
+          <h4>Principal</h4>
+          <p><strong>{{ prospect.contacts.main.name }}</strong></p>
+          <p>{{ prospect.contacts.main.position }}</p>
+          <p class="link">{{ prospect.contacts.main.email }}</p>
+          <p>{{ prospect.contacts.main.phone }}</p>
+        </div>
+        <div class="divider"></div>
+        <div class="contact-box">
+          <h4>Juridique</h4>
+          <p><strong>{{ prospect.contacts.legal.name }}</strong></p>
+          <p class="link">{{ prospect.contacts.legal.email }}</p>
+        </div>
+      </section>
+    </div>
+
+    <!-- Column 2: Project & Documents -->
+    <div class="col-right">
+      <section class="card">
+        <h3>Proposition de Collaboration</h3>
+        <div class="kv-list">
+          <div class="kv-item">
+            <span class="label">Type d'accord</span>
+            <span class="value highlight">{{ prospect.collaboration.type }}</span>
+          </div>
+          <div class="kv-item">
+            <span class="label">Axes d'intérêt</span>
+            <div class="tags">
+              <span class="tag" *ngFor="let axe of prospect.collaboration.axes">{{ axe }}</span>
+            </div>
+          </div>
+          <div class="kv-item block">
+            <span class="label">Description du projet</span>
+            <p class="description">{{ prospect.collaboration.project }}</p>
+          </div>
+          <div class="kv-item">
+            <span class="label">Échéance souhaitée</span>
+            <span class="value">{{ prospect.collaboration.deadline }}</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h3>Documents Soumis</h3>
+        <div class="doc-list">
+          <div class="doc-item" *ngFor="let doc of prospect.documents">
+            <div class="doc-info">
+              <span class="doc-name">{{ doc.name }}</span>
+              <span class="doc-type">{{ doc.type }}</span>
+            </div>
+            <button class="btn-text">Télécharger</button>
+          </div>
+        </div>
+      </section>
+    </div>
+
+  </div>
+</div>
+
+<!-- Rejection Modal Overlay -->
+<div class="modal-overlay" *ngIf="showRejectModal">
+  <div class="modal-card">
+    <div class="modal-header">
+      <h2>Refuser la Demande</h2>
+      <button class="close-btn" (click)="cancelReject()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <p>Veuillez indiquer le motif du refus. Ce message sera inclus dans la notification envoyée au demandeur.</p>
+      <div class="form-group">
+        <label for="reason">Motif du Refus</label>
+        <textarea id="reason" rows="4" [(ngModel)]="rejectionReason" placeholder="Ex: Dossier incomplet, Profil non adapté..."></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" (click)="cancelReject()">Annuler</button>
+      <button class="btn btn-danger" (click)="confirmReject()">Confirmer le Refus</button>
+    </div>
+  </div>
+</div>

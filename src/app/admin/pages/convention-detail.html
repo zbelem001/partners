@@ -1,0 +1,91 @@
+<div class="convention-detail-page" *ngIf="convention">
+  
+  <!-- Workflow Progress Bar -->
+  <div class="workflow-strip">
+    <div class="step" *ngFor="let step of convention.workflow.steps; let i = index" 
+         [class.completed]="step.status === 'completed'" 
+         [class.current]="step.status === 'current'">
+      <div class="step-marker">
+        <span class="check" *ngIf="step.status === 'completed'">✓</span>
+        <span class="num" *ngIf="step.status !== 'completed'">{{ i + 1 }}</span>
+      </div>
+      <span class="step-label">{{ step.label }}</span>
+    </div>
+  </div>
+
+  <div class="page-header">
+    <div class="header-main">
+      <div class="breadcrumbs">
+        <a routerLink="/admin/conventions">Conventions</a> / <span>{{ convention.ref }}</span>
+      </div>
+      <h1>{{ convention.type }} - {{ convention.partnerName }}</h1>
+      <p class="meta">Du {{ convention.startDate }} au {{ convention.endDate }} • <span class="badge" [class.active-badge]="convention.status === 'Active'">{{ convention.status }}</span></p>
+    </div>
+    <div class="header-actions">
+      <button class="btn btn-outline" [routerLink]="['/admin/partners', convention.partnerId]">Voir Partenaire</button>
+      <button class="btn btn-primary">Télécharger PDF</button>
+    </div>
+  </div>
+
+  <div class="content-grid">
+    
+    <!-- LEFT: Convention Details -->
+    <div class="details-section">
+      <div class="card">
+        <h3>Description & Objectifs</h3>
+        <div class="info-block">
+          <label>Objet de la convention</label>
+          <p>{{ convention.description }}</p>
+        </div>
+        <div class="info-block">
+          <label>Objectifs Spécifiques</label>
+          <p>{{ convention.objectives }}</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h3>Partenariats & Actions ({{ convention.partenariats.length }})</h3>
+          <button class="btn btn-small btn-outline">Ajouter Action</button>
+        </div>
+        
+        <div class="partenariats-list">
+          <div class="partenariat-item" *ngFor="let part of convention.partenariats">
+            <div class="item-header">
+              <h4>{{ part.title }}</h4>
+              <span class="status-pill">{{ part.status }}</span>
+            </div>
+            <div class="item-meta">
+              <span>Domaine : {{ part.domain }}</span>
+              <span>Budget : {{ part.budget }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Documents & History -->
+    <div class="sidebar-section">
+      <div class="card">
+        <h3>Documents Convention</h3>
+        <div class="doc-list">
+          <div class="doc-item">
+            <div class="file-icon">PDF</div>
+            <div class="file-info">
+              <span class="name">Contrat Signé.pdf</span>
+              <span class="size">2.4 MB • 01/02/2026</span>
+            </div>
+          </div>
+          <div class="doc-item">
+            <div class="file-icon">DOC</div>
+            <div class="file-info">
+              <span class="name">Draft v3_Final.docx</span>
+              <span class="size">1.1 MB • 20/01/2026</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
