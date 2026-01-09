@@ -1,0 +1,32 @@
+<div class="admin-container">
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <h2>2iE ADMIN</h2>
+    </div>
+    <nav class="sidebar-nav">
+      <a routerLink="/admin/dashboard" routerLinkActive="active">
+        Tableau de bord
+      </a>
+      <a routerLink="/admin/prospects" routerLinkActive="active">
+        Gestion Prospects
+      </a>
+      <div class="divider"></div>
+      <a routerLink="/login" class="logout-link">
+        Déconnexion
+      </a>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <header class="top-bar">
+      <div class="user-info">
+        <span class="role">Administrateur</span>
+        <span class="name">Adama Ouedraogo</span>
+      </div>
+    </header>
+    
+    <div class="content-wrapper">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+</div>

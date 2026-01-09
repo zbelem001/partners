@@ -1,0 +1,106 @@
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+  
+  .header-left {
+    h1 {
+      font-size: 1.8rem;
+      color: var(--text-dark);
+      margin-bottom: 8px;
+    }
+    p {
+      color: var(--text-light);
+    }
+  }
+}
+
+.table-container {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+  overflow: hidden;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  
+  thead {
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #eef0f2;
+    
+    th {
+      padding: 16px 24px;
+      text-align: left;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+  }
+  
+  tbody {
+    tr {
+      border-bottom: 1px solid #eef0f2;
+      transition: background-color 0.2s;
+      
+      &:last-child {
+        border-bottom: none;
+      }
+      
+      &:hover {
+        background-color: #f8f9fa;
+      }
+      
+      td {
+        padding: 16px 24px;
+        color: var(--text-dark);
+        font-size: 0.95rem;
+        
+        .id-cell {
+          font-family: monospace;
+          color: var(--primary-blue);
+          font-weight: 600;
+        }
+        
+        .org-name {
+          font-weight: 500;
+        }
+      }
+    }
+  }
+}
+
+.badge {
+  display: inline-flex;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  
+  &-warning { background-color: rgba(255, 189, 0, 0.15); color: #d4a000; }
+  &-success { background-color: rgba(46, 196, 182, 0.15); color: var(--primary-green); }
+  &-danger { background-color: rgba(227, 6, 19, 0.1); color: var(--primary-red); }
+  &-secondary { background-color: #eef0f2; color: var(--text-light); }
+}
+
+.btn-icon {
+  background: none;
+  border: 1px solid #ddd;
+  padding: 6px 12px;
+  border-radius: 4px;
+  color: var(--text-dark);
+  font-size: 0.8rem;
+  cursor: pointer;
+  
+  &:hover {
+    background-color: var(--primary-blue);
+    color: white;
+    border-color: var(--primary-blue);
+  }
+}

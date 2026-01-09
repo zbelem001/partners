@@ -1,0 +1,677 @@
+VISION GLOBALE
+
+Objectif : Digitaliser l'intégralité du cycle de vie des partenariats 2iE, de la prospection à l'évaluation, en automatisant les processus existants et en offrant une visibilité complète à toutes les parties prenantes.
+
+Valeur ajoutée :
+
+    Réduction de 70% du temps de traitement des conventions
+
+    Centralisation de tous les documents et informations
+
+    Meilleure qualité des données (moins d'erreurs)
+
+    Reporting en temps réel pour la prise de décision
+
+👤 PERSONAS & RÔLES
+1. Administrateur RECIP
+
+    Gestion globale de la plateforme
+
+    Configuration des workflows
+
+    Supervision de toutes les conventions
+
+    Gestion des utilisateurs et permissions
+
+2. Responsable de Direction (Émettrice)
+
+    Initiation de nouvelles conventions
+
+    Suivi des conventions de sa direction
+
+    Validation des étapes métier
+
+    Consultation des tableaux de bord
+
+3. Responsable de Suivi (Principal/Secondaire)
+
+    Suivi opérationnel des conventions assignées
+
+    Saisie des comptes-rendus de rencontres
+
+    Gestion des actions et échéances
+
+    Évaluation des partenariats
+
+4. Prospect/Partenaire Potentiel
+
+    Auto-enregistrement via le portail public
+
+    Consultation du statut de sa demande
+
+    Téléchargement de documents modèles
+
+    Communication avec 2iE
+
+5. Partenaire Actif
+
+    Accès à son espace dédié (optionnel futur)
+
+    Consultation des conventions actives
+
+    Échange de documents sécurisé
+
+    Remplissage des enquêtes de satisfaction
+
+🚀 FONCTIONNALITÉS PAR MODULE
+MODULE 1 : PORTAL PUBLIC PROSPECTS
+1.1 Landing Page de Présentation
+
+    Présentation des avantages du partenariat 2iE
+
+    Témoignages de partenaires existants
+
+    Types d'accords possibles (cadre, spécifique)
+
+    Axes de collaboration proposés
+
+    Bouton d'appel à action "Devenir Partenaire"
+
+1.2 Formulaire d'Inscription Intelligent
+Étape 1 : Informations de la Structure
+
+    Nom de la structure (avec autocomplétion)
+
+    Type (Entreprise, ONG, Institution, Université)
+
+    Secteur d'activité (liste pré-définie + libre)
+
+    Pays (select avec drapeaux)
+
+    Année de création (avec validation)
+
+    Site web (validation URL)
+
+Étape 2 : Contacts
+
+    Contact principal (nom, prénom, email, téléphone, poste)
+
+    Contact juridique (optionnel)
+
+    Contact technique (optionnel)
+
+    Validation en temps réel des emails
+
+    Formatage automatique des téléphones (international)
+
+Étape 3 : Proposition de Collaboration
+
+    Axes d'intérêt (multi-select : Recherche, Formation, Innovation, Stage/Emploi, Événementiel)
+
+    Type d'accord souhaité (Cadre, Spécifique, Non déterminé)
+
+    Description du projet (textarea guidé)
+
+    Budget estimé (optionnel)
+
+    Délai souhaité (Urgent, 3-6 mois, >6 mois)
+
+Étape 4 : Documents
+
+    Upload de présentation (PDF obligatoire, <5MB)
+
+    Logo (optionnel, formats image)
+
+    Statuts (optionnel, PDF)
+
+    Dernier rapport d'activité (optionnel)
+
+    Prévisualisation des documents
+
+    Scanner antivirus intégré
+
+1.3 Fonctionnalités Anti-Erreurs
+
+    Validation en temps réel de tous les champs
+
+    Auto-complétion depuis les bases entreprises
+
+    Guide contextuel pour chaque section
+
+    Sauvegarde automatique (draft)
+
+    Captcha invisible pour prévenir le spam
+
+    Limite de 5 soumissions/jour par IP
+
+1.4 Confirmation et Suivi
+
+    Numéro de demande unique (PR-2024-XXX)
+
+    Email de confirmation automatique
+
+    Page de statut avec code de suivi
+
+    Estimation du temps de traitement (48h)
+
+    Contacts RECIP pour questions
+
+MODULE 2 : GESTION DES PROSPECTS (BACKOFFICE)
+2.1 Tableau de Bord Prospects
+
+    Vue Kanban (Nouveau, En revue, Contacté, Qualifié, Rejeté)
+
+    Filtres avancés (pays, secteur, date, score)
+
+    Recherche full-text
+
+    Actions batch (envoyer email, assigner, exporter)
+
+2.2 Scoring Automatique
+
+    Algorithme de qualification (0-100 points)
+
+    Critères : complétude info, secteur prioritaire, budget, documents
+
+    Segmentation automatique (A: >80pts, B: 50-80pts, C: <50pts)
+
+    Suggestions d'actions par segment
+
+2.3 Fiche Prospect Détail
+
+    Vue complète des informations soumises
+
+    Historique des interactions
+
+    Documents associés
+
+    Notes internes
+
+    Timeline de suivi
+
+2.4 Workflow de Qualification
+
+    Attribution manuelle ou automatique à un responsable
+
+    Checklist de qualification
+
+    Modèles d'emails pré-rédigés
+
+    Prise de rendez-vous intégrée
+
+    Conversion en partenaire (1 clic)
+
+MODULE 3 : GESTION DES PARTENAIRES
+3.1 Répertoire des Partenaires
+
+    Liste complète avec filtres
+
+    Fiche partenaire détaillée
+
+    Classification (Stratégique, Opérationnel, Académique)
+
+    Niveau de relation (Nouveau, Actif, Inactif, Ancien)
+
+3.2 Fiche Partenaire Complète
+Section 1 : Informations Générales
+
+    Code partenaire unique (P-2024-XXX)
+
+    Historique depuis le prospect d'origine
+
+    Contacts multiples avec rôles
+
+    Métadonnées (CA, effectif, site web, réseaux sociaux)
+
+Section 2 : Historique des Relations
+
+    Timeline des interactions
+
+    Toutes les conventions passées et présentes
+
+    Rencontres et événements
+
+    Documents partagés
+
+Section 3 : Évaluations et Notes
+
+    Notes internes par direction
+
+    Évaluations formalisées
+
+    Satisfaction mesurée
+
+    Recommandations de réengagement
+
+3.3 Espace Partenaire (Optionnel Phase 2)
+
+    Portail sécurisé avec login
+
+    Vue de ses conventions actives
+
+    Messagerie sécurisée avec 2iE
+
+    Upload de documents demandés
+
+    Enquêtes de satisfaction en ligne
+
+MODULE 4 : GESTION DES CONVENTIONS (CŒUR DU SYSTÈME)
+4.1 Workflow des 5 Étapes Digitalisé
+Étape 1 : Identification & Draft
+
+    Création convention depuis prospect qualifié
+
+    Sélection du modèle d'accord approprié
+
+    Remplissage guidé des clauses
+
+    Validation RECIP du draft
+
+    Envoi au partenaire pour relecture
+
+Étape 2 : Négociation & Validation
+
+    Versionning des drafts
+
+    Commentaires collaboratifs
+
+    Validation direction émettrice
+
+    Validation RECIP finale
+
+    Tracking des modifications
+
+Étape 3 : Circuit de Signatures
+
+    Digitalisation de la "Fiche de suivi de partenariats"
+
+    Workflow électronique de validation :
+
+        SRECIP (date validation)
+
+        DFC (date validation)
+
+        CAQ (date validation)
+
+        DG (date signature)
+
+    Notifications automatiques aux validateurs
+
+    Escalade en cas de retard
+
+Étape 4 : Exécution & Suivi
+
+    Convention marquée "Active"
+
+    Génération plan d'activités annuel
+
+    Programmation des réunions d'étape
+
+    Suivi financier (échéances, versements)
+
+    Stockage de l'original signé
+
+Étape 5 : Évaluation & Renouvellement
+
+    Rappel automatique 1 mois avant échéance
+
+    Fiche d'évaluation digitale à remplir
+
+    Processus de décision (renouvellement/non)
+
+    Génération du nouveau draft si renouvellement
+
+    Archivage de la convention terminée
+
+4.2 Fiche Convention Détail
+Section : Informations Convention
+
+    Référence unique (CONV-2024-XXX)
+
+    Titre de l'accord
+
+    Type (Cadre/Spécifique/Addendum)
+
+    Statut (Draft, En signature, Active, Terminée, etc.)
+
+    Dates début/fin
+
+    Montant et devise
+
+Section : Responsables
+
+    Responsable de suivi principal
+
+    Responsable de suivi secondaire
+
+    Direction émettrice
+
+    Historique des changements de responsables
+
+Section : Calendrier des Événements
+
+    Dates de validation (SRECIP, DFC, CAQ)
+
+    Date de signature DG
+
+    Date transmission partenaire
+
+    Dates des réunions de suivi
+
+    Échéances financières
+
+Section : Documents Associés
+
+    Tous les drafts successifs
+
+    Version signée scannée
+
+    Annexes techniques
+
+    Rapports d'activité
+
+    PV de réunions
+
+4.3 Outils Collaboratifs
+
+    Commentaires par article/convention
+
+    @mentions pour attirer l'attention
+
+    Notifications en temps réel
+
+    Historique des modifications
+
+    Comparaison de versions
+
+MODULE 5 : SUIVI OPÉRATIONNEL
+5.1 Gestion des Rencontres
+Création de Rencontre
+
+    Type (Entretien prospect, Réunion suivi, Événement, Appel)
+
+    Date, lieu, mode (présentiel/visio)
+
+    Participants (sélection depuis contacts)
+
+    Ordre du jour
+
+    Documents préparatoires
+
+Fiche d'Entretien Digitalisée
+
+    Remplacement du document Word
+
+    Champs structurés
+
+    Participants avec rôles
+
+    Compte-rendu avec template
+
+    Décisions et actions
+
+    Documents joints
+
+Suivi Post-Rencontre
+
+    Génération PV automatique
+
+    Assignation des actions
+
+    Rappels pour les échéances
+
+    Intégration au timeline de la convention
+
+5.2 Plan d'Activités Annuel
+
+    Création pour chaque convention active
+
+    Activités planifiées par trimestre
+
+    Responsables assignés
+
+    Budget alloué
+
+    Suivi du taux de réalisation
+
+5.3 Tableau de Bord Opérationnel
+
+    Vue calendrier des événements
+
+    Liste des actions en retard
+
+    Prochaines échéances
+
+    Tâches assignées à l'utilisateur
+
+    Notifications personnalisées
+
+MODULE 6 : GESTION DOCUMENTAIRE
+6.1 Bibliothèque Centrale
+Dossiers par Type
+
+    Modèles de conventions (toujours à jour)
+
+    Fiches d'entretien
+
+    Rapports types
+
+    Documents institutionnels
+
+    Logos et supports de communication
+
+Fonctionnalités Avancées
+
+    Versionning automatique
+
+    Contrôle d'accès par rôle
+
+    Recherche full-text dans les PDF
+
+    Prévisualisation sans téléchargement
+
+    Historique des consultations
+
+6.2 Gestion des Pièces Jointes
+
+    Upload multiple
+
+    Catégorisation automatique
+
+    Métadonnées extraites
+
+    OCR pour documents scannés
+
+    Compression intelligente
+
+6.3 Sécurité des Documents
+
+    Niveaux de confidentialité (Public, Interne, Confidentiel)
+
+    Watermarking pour documents sensibles
+
+    Logs d'accès détaillés
+
+    Chiffrement des fichiers
+
+    Durée de vie automatique
+
+MODULE 7 : NOTIFICATIONS & AUTOMATISATION
+7.1 Système de Notifications
+Types de Notifications
+
+    Email (quotidien/hebdomadaire)
+
+    Notifications in-app (badges)
+
+    Rappels calendrier (iCal)
+
+    Alertes urgentes (SMS optionnel)
+
+Événements Déclencheurs
+
+    Nouveau prospect inscrit
+
+    Convention en attente de validation
+
+    Échéance approchant (30j, 15j, 7j, 1j)
+
+    Action en retard
+
+    Document ajouté/commenté
+
+7.2 Modèles d'Emails Automatisés
+
+    Accusé réception prospect
+
+    Rappel validation en attente
+
+    Invitation réunion
+
+    Demande d'évaluation
+
+    Notification de renouvellement
+
+7.3 Workflows Automatisés
+
+    Attribution automatique des prospects
+
+    Escalade des validations en retard
+
+    Génération des rapports périodiques
+
+    Archivage automatique des conventions terminées
+
+    Nettoyage des données temporaires
+
+MODULE 8 : REPORTING & ANALYTICS
+8.1 Tableaux de Bord Directionnels
+Pour Direction RECIP
+
+    Vue 360° de tous les partenariats
+
+    Taux de conversion prospects → partenaires
+
+    Nombre de conventions par statut
+
+    Répartition par secteur/pays
+
+    Échéances critiques du mois
+
+Pour Directions Émetrices
+
+    Conventions de leur direction uniquement
+
+    État d'avancement par convention
+
+    Responsables et charges de travail
+
+    Budgets engagés et consommés
+
+Pour Responsables de Suivi
+
+    Mes conventions assignées
+
+    Mes actions en cours/en retard
+
+    Mes prochaines réunions
+
+    Mes indicateurs de performance
+
+8.2 Rapports Standards
+
+    Rapport mensuel d'activité
+
+    Bilan annuel des partenariats
+
+    Analyse par secteur géographique
+
+    Performance par type de convention
+
+    Taux de renouvellement
+
+8.3 Outils d'Analyse
+
+    Filtres multidimensionnels
+
+    Export Excel/PDF/PPT
+
+    Graphiques interactifs
+
+    Comparaisons périodiques
+
+    Indicateurs personnalisables
+
+8.4 KPIs Principaux
+Quantitatifs
+
+    Nombre total de partenaires actifs
+
+    Nombre de nouvelles conventions/mois
+
+    Taux de conversion prospect→partenaire
+
+    Délai moyen de traitement
+
+    Taux de renouvellement
+
+Qualitatifs
+
+    Satisfaction partenaires (NPS)
+
+    Taux d'utilisation de la plateforme
+
+    Qualité des données (complétude)
+
+    Respect des délais de validation
+
+    Retour sur investissement des partenariats
+
+MODULE 9 : ADMINISTRATION & CONFIGURATION
+9.1 Gestion des Utilisateurs
+
+    Création/compte avec rôles
+
+    Permissions granulaires
+
+    Groupes d'utilisateurs
+
+    Profils personnalisables
+
+    SSO (optionnel)
+
+9.2 Configuration du Workflow
+
+    Adaptation des 5 étapes
+
+    Définition des validateurs par type
+
+    Délais par étape
+
+    Modèles de documents
+
+    Textes automatiques
+
+9.3 Paramètres Métier
+
+    Listes de valeurs (pays, secteurs, types)
+
+    Axes de collaboration
+
+    Directions internes
+
+    Catégories de partenaires
+
+    Devises acceptées
+
+9.4 Supervision
+
+    Logs d'activité
+
+    Monitoring des performances
+
+    Alertes techniques
+
+    Sauvegardes
+
+    Journal des modifications

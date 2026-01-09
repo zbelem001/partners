@@ -1,0 +1,197 @@
+<app-header></app-header>
+
+<main class="register-page">
+  <div class="container">
+    <div class="form-container">
+      
+      <!-- Progress Steps -->
+      <div class="steps-container">
+        <div class="step" *ngFor="let step of steps; let i = index" 
+             [class.active]="i + 1 === currentStep" 
+             [class.completed]="i + 1 < currentStep">
+          <div class="step-circle">{{ i + 1 }}</div>
+          <span class="step-title">{{ step.title }}</span>
+          <div class="step-line" *ngIf="i < steps.length - 1"></div>
+        </div>
+      </div>
+
+      <div class="form-header">
+        <h2>Devenir Partenaire</h2>
+        <p>Remplissez ce formulaire pour initier une collaboration avec 2iE.</p>
+      </div>
+
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        
+        <!-- STEP 1: INFORMATION STRUCTURE -->
+        <div class="form-step" *ngIf="currentStep === 1">
+          <h3>Information sur la Structure</h3>
+          
+          <div class="form-group">
+            <label>Nom de la structure *</label>
+            <input type="text" formControlName="structureName" class="form-control" placeholder="Ex: Entreprise Tech SA">
+          </div>
+
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <label>Type *</label>
+                <select formControlName="structureType" class="form-control">
+                  <option value="">Sélectionner...</option>
+                  <option value="Entreprise">Entreprise</option>
+                  <option value="ONG">ONG</option>
+                  <option value="Institution">Institution Publique</option>
+                  <option value="Universite">Université / Centre de Recherche</option>
+                </select>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <label>Année de création *</label>
+                <input type="number" formControlName="creationYear" class="form-control" placeholder="Ex: 2005">
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <label>Secteur d'activité *</label>
+                <input type="text" formControlName="sector" class="form-control" placeholder="Ex: Énergie Renouvelable">
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <label>Pays *</label>
+                <select formControlName="country" class="form-control">
+                  <option value="">Sélectionner...</option>
+                  <option value="Burkina Faso">Burkina Faso</option>
+                  <option value="Cote d'Ivoire">Côte d'Ivoire</option>
+                  <option value="Senegal">Sénégal</option>
+                  <option value="France">France</option>
+                  <option value="Autre">Autre</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Site Web</label>
+            <input type="url" formControlName="website" class="form-control" placeholder="https://www.exemple.com">
+          </div>
+        </div>
+
+        <!-- STEP 2: CONTACTS -->
+        <div class="form-step" *ngIf="currentStep === 2">
+          <h3>Contact Principal</h3>
+          
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <label>Nom complet *</label>
+                <input type="text" formControlName="contactName" class="form-control" placeholder="Nom & Prénom">
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <label>Poste / Fonction *</label>
+                <input type="text" formControlName="contactRole" class="form-control" placeholder="Ex: DRH, Directeur Technique">
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <label>Email professionnel *</label>
+                <input type="email" formControlName="contactEmail" class="form-control" placeholder="email@structure.com">
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <label>Téléphone *</label>
+                <input type="tel" formControlName="contactPhone" class="form-control" placeholder="+226 ...">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 3: PROPOSITION DE COLLABORATION -->
+        <div class="form-step" *ngIf="currentStep === 3">
+          <h3>Votre Projet de Partenariat</h3>
+          
+          <div class="form-group">
+            <label>Type d'accord souhaité *</label>
+            <select formControlName="agreementType" class="form-control">
+              <option value="">Sélectionner...</option>
+              <option value="Cadre">Accord Cadre (Global)</option>
+              <option value="Specifique">Accord Spécifique (Projet précis)</option>
+              <option value="Inconnu">Je ne sais pas encore</option>
+            </select>
+          </div>
+
+           <div class="form-group">
+            <label>Axes d'intérêt</label>
+            <div class="checkbox-group">
+              <label><input type="checkbox"> Recherche & Innovation</label>
+              <label><input type="checkbox"> Formation Continue</label>
+              <label><input type="checkbox"> Stages & Emploi</label>
+              <label><input type="checkbox"> Evénementiel</label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Description du projet / Motivation *</label>
+            <textarea formControlName="projectDescription" class="form-control" rows="5" placeholder="Décrivez brièvement comment vous souhaitez collaborer avec 2iE..."></textarea>
+          </div>
+
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <label>Budget estimé (FCFA/EUR) - Optionnel</label>
+                <input type="text" formControlName="estimatedBudget" class="form-control">
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <label>Délai de mise en œuvre *</label>
+                <select formControlName="deadline" class="form-control">
+                  <option value="">Sélectionner...</option>
+                  <option value="Urgent">Urgent (< 3 mois)</option>
+                  <option value="Moyen">Moyen terme (3-6 mois)</option>
+                  <option value="Long">Long terme (> 6 mois)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 4: DOCUMENTS -->
+        <div class="form-step" *ngIf="currentStep === 4">
+          <h3>Documents Requis</h3>
+          <p class="info-text">Merci de joindre une présentation de votre structure pour nous aider à mieux vous connaître.</p>
+
+          <div class="upload-box">
+             <p>Glissez-déposez votre présentation (PDF) ici ou cliquez pour parcourir.</p>
+             <button type="button" class="btn btn-outline sm">Choisir un fichier</button>
+          </div>
+
+          <div class="form-check">
+             <input type="checkbox" id="confirm" required>
+             <label for="confirm">Je certifie l'exactitude des informations fournies.</label>
+          </div>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="form-actions">
+          <button type="button" class="btn btn-outline" (click)="prevStep()" *ngIf="currentStep > 1">Précédent</button>
+          <div class="spacer"></div>
+          <button type="button" class="btn btn-primary" (click)="nextStep()" *ngIf="currentStep < 4">Suivant</button>
+          <button type="submit" class="btn btn-primary" *ngIf="currentStep === 4">Soumettre la demande</button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</main>
+
+<app-footer></app-footer>

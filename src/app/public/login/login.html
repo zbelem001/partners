@@ -1,0 +1,57 @@
+<app-header></app-header>
+
+<main class="login-page">
+  <div class="container">
+    <div class="login-wrapper">
+      <div class="login-header">
+        <h2>Connexion Personnel 2iE</h2>
+        <p>Espace réservé aux administrateurs et gestionnaires de partenariats.</p>
+      </div>
+
+      <div class="login-card">
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+          
+          <div class="form-group">
+            <label for="employeeId">Numéro Matricule / ID Employé</label>
+            <div class="input-group">
+              <input type="text" id="employeeId" formControlName="employeeId" class="form-control" placeholder="Ex: M12345">
+            </div>
+            <div *ngIf="loginForm.get('employeeId')?.touched && loginForm.get('employeeId')?.errors" class="error-msg">
+              Matricule requis.
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="password">Mot de passe</label>
+            <div class="input-group">
+              <input type="password" id="password" formControlName="password" class="form-control" placeholder="••••••••">
+            </div>
+          </div>
+
+          <div class="form-options">
+            <label class="remember-me">
+              <input type="checkbox"> Se souvenir de moi
+            </label>
+            <a href="#" class="forgot-password">Mot de passe oublié ?</a>
+          </div>
+
+          <button type="submit" class="btn btn-primary full-width" [disabled]="loginForm.invalid">
+            Accéder à l'espace
+          </button>
+
+          <div class="context-info">
+            <p>Cet accès est strictement réservé au personnel autorisé de l'Institut 2iE.</p>
+          </div>
+        </form>
+      </div>
+
+      <div class="register-link">
+        <p>Vous êtes un partenaire externe ?</p>
+        <a routerLink="/register" class="btn btn-outline">Initier une demande de partenariat</a>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<app-footer></app-footer>
