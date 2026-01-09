@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, ActivatedRoute, RouterModule } from '@angular/router';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ConventionsService } from '../../../services/conventions.service';
 import { PartnersService } from '../../../services/partners.service';
 
@@ -15,7 +15,7 @@ interface Partner {
 @Component({
   selector: 'app-convention-form',
   standalone: true,
-  imports: [CommonModule, RouterModule, ReactiveFormsModule],
+  imports: [CommonModule, RouterModule, ReactiveFormsModule, FormsModule],
   template: `
     <div class="convention-form-page">
       <!-- BREADCRUMB -->

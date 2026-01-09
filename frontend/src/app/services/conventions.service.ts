@@ -12,6 +12,7 @@ export interface Convention {
   startDate?: string;
   endDate?: string;
   progress?: number;
+  responsibleUserId?: string;
   createdAt?: string;
 }
 
@@ -25,6 +26,10 @@ export class ConventionsService {
 
   findAll(): Observable<Convention[]> {
     return this.http.get<Convention[]>(this.apiUrl);
+  }
+
+  findMyConventions(): Observable<Convention[]> {
+    return this.http.get<Convention[]>(`${this.apiUrl}/my`);
   }
 
   findOne(id: string): Observable<Convention> {

@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { RouterModule, ActivatedRoute } from '@angular/router';
+import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { Header } from '../components/header/header';
 import { Footer } from '../components/footer/footer';
 import { AuthService } from '../../services/auth.service';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-login',
@@ -14,13 +15,13 @@ import { AuthService } from '../../services/auth.service';
 })
 export class Login implements OnInit {
   loginForm: FormGroup;
-  errorMessage: string = '';
-  successMessage: string = '';
   
   constructor(
     private fb: FormBuilder, 
     private authService: AuthService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router,
+    private toastService: ToastService
   ) {
     this.loginForm = this.fb.group({
       employeeId: ['', [Validators.required]], 
@@ -31,25 +32,30 @@ export class Login implements OnInit {
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
       if (params['logout'] === 'success') {
-        this.successMessage = 'Déconnexion réussie. À bientôt !';
+        setTimeout(() => {
+          this.toastService.success('Déconnexion réussie. À bientôt !');
+        }, 100);
+        // Nettoyer les query params après affichage
+        this.router.navigate([], {
+          relativeTo: this.route,
+          queryParams: {},
+          replaceUrl: true
+        });
       }
     });
   }
 
   onSubmit() {
-    this.errorMessage = '';
-    this.successMessage = '';
-    
     if (this.loginForm.valid) {
       const { employeeId, password } = this.loginForm.value;
       
       this.authService.login({ email: employeeId, password }).subscribe({
         next: () => {
-          // Redirect is handled in service
+          this.toastService.success('Connexion réussie ! Redirection...');
         },
         error: (err) => {
           console.error('Login failed', err);
-          this.errorMessage = 'Identifiants incorrects';
+          this.toastService.error('Identifiants incorrects');
         }
       });
     }

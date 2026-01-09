@@ -12,6 +12,7 @@ import { WorkspaceConventionDetailComponent } from './pages/conventions/conventi
 import { ConventionFormComponent } from './pages/conventions/convention-form';
 import { MyConventionsComponent } from './pages/my-conventions/my-conventions';
 import { MyTasksComponent } from './pages/tasks/tasks';
+import { ValidationDashboardComponent } from './pages/validation/validation-dashboard';
 
 const routes: Routes = [
   {
@@ -41,7 +42,15 @@ const routes: Routes = [
         }]
       },
       { path: 'conventions/:id', component: WorkspaceConventionDetailComponent },
-      { path: 'tasks', component: MyTasksComponent }
+      { path: 'tasks', component: MyTasksComponent },
+      { 
+        path: 'validation', 
+        component: ValidationDashboardComponent,
+        canActivate: [() => {
+          // TODO: Add roleGuard for SRECIP, DFC, CAQ, DG
+          return true;
+        }]
+      }
     ]
   }
 ];
@@ -58,7 +67,8 @@ const routes: Routes = [
     WorkspaceConventionDetailComponent,
     ConventionFormComponent,
     MyConventionsComponent,
-    MyTasksComponent
+    MyTasksComponent,
+    ValidationDashboardComponent
   ],
   exports: [RouterModule]
 })

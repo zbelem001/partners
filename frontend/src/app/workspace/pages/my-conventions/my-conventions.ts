@@ -461,9 +461,8 @@ export class MyConventionsComponent implements OnInit {
   }
 
   loadMyConventions() {
-    // TODO: Implémenter le filtrage côté serveur par userId
-    // Pour l'instant, on charge toutes et on simule le filtrage
-    this.conventionsService.findAll().subscribe({
+    // Load user's assigned conventions from API
+    this.conventionsService.findMyConventions().subscribe({
       next: (data) => {
         this.conventions = data;
         this.loadPartnerNames();

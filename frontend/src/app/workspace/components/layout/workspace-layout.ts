@@ -31,6 +31,10 @@ import { HasRoleDirective } from '../../../directives/has-role.directive';
           <a routerLink="/workspace/partners" routerLinkActive="active">
             Annuaire
           </a>
+          <a routerLink="/workspace/validation" routerLinkActive="active" 
+             *ngIf="isValidator()">
+            Validation
+          </a>
           <a routerLink="/workspace/tasks" routerLinkActive="active">
             Tâches
           </a>
@@ -150,4 +154,9 @@ export class WorkspaceLayoutComponent {
     public authService: AuthService,
     public permissionsService: PermissionsService
   ) {}
+
+  isValidator(): boolean {
+    const role = this.authService.getCurrentUserRole();
+    return role ? ['SRECIP', 'DFC', 'CAQ', 'DG'].includes(role) : false;
+  }
 }

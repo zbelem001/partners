@@ -2,22 +2,22 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { TasksService } from '../../../services/tasks.service';
 import { AuthService } from '../../../services/auth.service';
 import { PermissionsService, Permission } from '../../../services/permissions.service';
-import { HasPermissionDirective } from '../../../directives/has-permission.directive';
 
 interface Task {
   id: string;
   title: string;
-  description: string;
+  description?: string;
   type: 'validation' | 'meeting' | 'document' | 'deadline' | 'other';
   status: 'pending' | 'in-progress' | 'completed' | 'late';
   priority: 'low' | 'medium' | 'high' | 'urgent';
-  dueDate: string;
+  dueDate?: string;
   conventionRef?: string;
   conventionId?: string;
   assignedBy?: string;
-  createdAt: string;
+  createdAt?: string;
 }
 
 @Component({
@@ -502,6 +502,7 @@ export class MyTasksComponent implements OnInit {
   ];
 
   constructor(
+    private tasksService: TasksService,
     private authService: AuthService,
     public permissionsService: PermissionsService
   ) {}
@@ -511,54 +512,26 @@ export class MyTasksComponent implements OnInit {
   }
 
   loadTasks() {
-    // TODO: Charger les tâches depuis l'API
-    // Pour l'instant, données de démonstration
-    this.tasks = this.generateDemoTasks();
-    this.calculateStats();
-    this.applyFilters();
-  }
-
-  generateDemoTasks(): Task[] {
-    const now = new Date();
-    return [
-      {
-        id: '1',
-        title: 'Valider la convention Bolloré',
-        description: 'Vérifier les clauses juridiques et donner l\'approbation finale',
-        type: 'validation',
-        status: 'pending',
-        priority: 'high',
-        dueDate: new Date(now.getTime() + 2 * 24 * 60 * 60 * 1000).toISOString(),
-        conventionRef: 'CONV-2026-042',
-        conventionId: '1',
-        assignedBy: 'Direction Générale',
-        createdAt: new Date(now.getTime() - 1 * 24 * 60 * 60 * 1000).toISOString()
+    // Load user's assigned tasks from API
+    this.tasksService.findMyTasks().subscribe({
+      next: (data) => {
+        this.tasks = data.map(task => ({
+          ...task,
+          type: task.type as any,
+          status: task.status as any,
+          priority: task.priority as any
+        }));
+        this.calculateStats();
+        this.applyFilters();
       },
-      {
-        id: '2',
-        title: 'Réunion de suivi TotalEnergies',
-        description: 'Point mensuel sur l\'avancement du partenariat',
-        type: 'meeting',
-        status: 'pending',
-        priority: 'medium',
-        dueDate: new Date(now.getTime() + 5 * 24 * 60 * 60 * 1000).toISOString(),
-        conventionRef: 'CONV-2026-018',
-        conventionId: '2',
-        createdAt: new Date(now.getTime() - 3 * 24 * 60 * 60 * 1000).toISOString()
-      },
-      {
-        id: '3',
-        title: 'Upload rapport trimestriel',
-        description: 'Soumettre le rapport d\'activité Q4 2025',
-        type: 'document',
-        status: 'late',
-        priority: 'urgent',
-        dueDate: new Date(now.getTime() - 2 * 24 * 60 * 60 * 1000).toISOString(),
-        conventionRef: 'CONV-2026-005',
-        conventionId: '3',
-        createdAt: new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000).toISOString()
+      error: (err) => {
+        console.error('Erreur chargement tâches:', err);
+        // Fallback to demo data if API fails
+        this.tasks = [];
+        this.calculateStats();
+        this.applyFilters();
       }
-    ];
+    });
   }
 
   calculateStats() {
@@ -588,12 +561,12 @@ export class MyTasksComponent implements OnInit {
     switch(this.sortBy) {
       case 'due_asc':
         this.filteredTasks.sort((a, b) => 
-          new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime()
+          new Date(a.dueDate || '').getTime() - new Date(b.dueDate || '').getTime()
         );
         break;
       case 'due_desc':
         this.filteredTasks.sort((a, b) => 
-          new Date(b.dueDate).getTime() - new Date(a.dueDate).getTime()
+          new Date(b.dueDate || '').getTime() - new Date(a.dueDate || '').getTime()
         );
         break;
       case 'priority':
@@ -604,7 +577,7 @@ export class MyTasksComponent implements OnInit {
         break;
       case 'recent':
         this.filteredTasks.sort((a, b) => 
-          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          new Date(b.createdAt || '').getTime() - new Date(a.createdAt || '').getTime()
         );
         break;
     }
@@ -636,7 +609,8 @@ export class MyTasksComponent implements OnInit {
     return labels[priority] || priority;
   }
 
-  getTimeRemaining(dueDate: string): string {
+  getTimeRemaining(dueDate?: string): string {
+    if (!dueDate) return 'Date non définie';
     const due = new Date(dueDate);
     const now = new Date();
     const diffTime = due.getTime() - now.getTime();
@@ -651,8 +625,9 @@ export class MyTasksComponent implements OnInit {
     return `Dans ${diffDays} jours`;
   }
 
-  getDueDateClass(dueDate: string, status: string): string {
+  getDueDateClass(dueDate?: string, status?: string): string {
     if (status === 'completed') return 'ok';
+    if (!dueDate) return 'unknown';
     
     const due = new Date(dueDate);
     const now = new Date();

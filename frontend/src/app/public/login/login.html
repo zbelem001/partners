@@ -10,14 +10,6 @@
 
       <div class="login-card">
         
-        <div class="alert-success" *ngIf="successMessage">
-          ✔ {{ successMessage }}
-        </div>
-
-        <div class="alert-error" *ngIf="errorMessage">
-          ⚠ {{ errorMessage }}
-        </div>
-
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
           
           <div class="form-group">
@@ -52,11 +44,6 @@
             <p>Cet accès est strictement réservé au personnel autorisé de l'Institut 2iE.</p>
           </div>
         </form>
-      </div>
-
-      <div class="register-link">
-        <p>Vous êtes un partenaire externe ?</p>
-        <a routerLink="/register" class="btn btn-outline">Initier une demande de partenariat</a>
       </div>
 
     </div>
