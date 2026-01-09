@@ -1,23 +1,23 @@
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn } from 'typeorm';
 
-@Entity()
+@Entity('conventions')
 export class Convention {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ unique: true })
+  @Column({ unique: true, length: 50 })
   ref: string; // Ex: CONV-2026-042
 
-  @Column()
+  @Column({ type: 'uuid' })
   partnerId: string; // Foreign Key to Partner (we will link later)
 
-  @Column()
+  @Column({ length: 100 })
   type: string; // Accord Cadre, Convention Spécifique
 
-  @Column()
+  @Column({ length: 50, default: 'Draft' })
   status: string; // Draft, Active, Signed, Ended
 
-  @Column({ nullable: true })
+  @Column({ length: 50, nullable: true })
   validationStatus: string; // DRAFT, PENDING_SRECIP, PENDING_DFC, PENDING_CAQ, PENDING_DG, APPROVED, REJECTED
 
   @Column({ type: 'date', nullable: true })
@@ -29,11 +29,11 @@ export class Convention {
   @Column('text', { nullable: true })
   objectives: string; // Objectifs de la convention
 
-  @Column({ nullable: true })
-  responsibleUserId: string; // User responsible for this convention
+  @Column('integer', { nullable: true })
+  responsibleUserId: number; // User responsible for this convention
 
-  @Column({ nullable: true })
-  currentValidatorRole: string; // Current validation step: SRECIP, DFC, CAQ, DG
+  @Column({ nullable: true, type: 'varchar' })
+  currentValidatorRole: string | null; // Current validation step: SRECIP, DFC, CAQ, DG
 
   @Column('simple-json', { nullable: true })
   validatedBy: {

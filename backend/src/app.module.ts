@@ -16,10 +16,14 @@ import { TasksModule } from './tasks/tasks.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
-      type: 'sqlite',
-      database: 'partners.db', // Local file database
+      type: 'postgres',
+      host: '127.0.0.1',
+      port: 5432,
+      username: 'postgres',
+      password: '13135690Mm@',
+      database: 'partners',
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
-      synchronize: true, // ⚠️ DEV ONLY: Auto-create tables on save
+      synchronize: true, 
     }),
     PartnersModule,
     UsersModule,

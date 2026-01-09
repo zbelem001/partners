@@ -9,11 +9,21 @@ export interface Prospect {
   type: string;
   sector: string;
   country: string;
+  city?: string;
   contactName: string;
   email: string;
   phone?: string;
-  projectDescription?: string;
+  position?: string;
+  description?: string;
+  motivation?: string;
+  collaborationAreas?: string;
+  agreementType?: string;
+  website?: string;
+  creationYear?: number;
+  deadline?: string;
+  estimatedBudget?: string;
   status: string;
+  priority?: string;
   submissionDate?: string;
   reviewNotes?: string;
 }

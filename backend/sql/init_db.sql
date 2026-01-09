@@ -9,14 +9,14 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 -- 1. TABLE UTILISATEURS (ADMINISTRATION)
 -- Gère les accès au Backoffice (Admin, Direction, Managers)
-CREATE TABLE "users" (
+CREATE TABLE "user" (
     "id" SERIAL PRIMARY KEY,
     "employeeId" VARCHAR(50) UNIQUE,
     "firstName" VARCHAR(100) NOT NULL,
     "lastName" VARCHAR(100) NOT NULL,
     "email" VARCHAR(255) UNIQUE NOT NULL,
-    "role" VARCHAR(50) NOT NULL CHECK (role IN ('Admin', 'Direction', 'Manager', 'User', 'Viewer')),
-    "department" VARCHAR(100),
+    "role" VARCHAR(50) NOT NULL CHECK (role IN ('Admin', 'SRECIP', 'DFC', 'CAQ', 'DG', 'Manager', 'User', 'Viewer')),
+    "department" VARCHAR(100) NOT NULL,
     "phone" VARCHAR(50),
     "bio" TEXT,
     "status" VARCHAR(50) DEFAULT 'Active',
@@ -31,14 +31,24 @@ CREATE TABLE "prospects" (
     "id" UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     "reference" VARCHAR(50) UNIQUE NOT NULL, -- Ex: PR-2026-001
     "companyName" VARCHAR(255) NOT NULL,
-    "type" VARCHAR(50), -- Entreprise, ONG, Université...
+    "type" VARCHAR(50), -- Académique, Recherche, Industriel, Institutionnel, ONG
     "sector" VARCHAR(100),
     "country" VARCHAR(100),
+    "city" VARCHAR(100),
+    "creationYear" INTEGER,
+    "website" VARCHAR(255),
     "contactName" VARCHAR(255) NOT NULL,
     "email" VARCHAR(255) NOT NULL,
     "phone" VARCHAR(50),
-    "projectDescription" TEXT,
-    "status" VARCHAR(50) DEFAULT 'New' CHECK (status IN ('New', 'Reviewed', 'Qualified', 'Rejected')),
+    "position" VARCHAR(100), -- Fonction/poste du contact
+    "description" TEXT,
+    "motivation" TEXT, -- Description détaillée du projet de partenariat (min 50 caractères)
+    "collaborationAreas" VARCHAR(255), -- Axes d'intérêt (Recherche, Formation, Stages...)
+    "agreementType" VARCHAR(50), -- Cadre, Specifique, Inconnu
+    "estimatedBudget" VARCHAR(100),
+    "deadline" VARCHAR(50), -- Urgent, Moyen, Long
+    "priority" VARCHAR(50) DEFAULT 'Medium',
+    "status" VARCHAR(50) DEFAULT 'pending' CHECK (status IN ('pending', 'Reviewed', 'Qualified', 'Rejected')),
     "submissionDate" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     "reviewNotes" TEXT
 );
@@ -99,7 +109,7 @@ CREATE TABLE "workflow_steps" (
     "label" VARCHAR(100) NOT NULL, -- Ex: "Validation Juridique", "Signature DG"
     "status" VARCHAR(50) DEFAULT 'Pending' CHECK (status IN ('Pending', 'Current', 'Completed')),
     "completedAt" TIMESTAMP,
-    "assignedTo" INTEGER REFERENCES "users"("id") -- Qui doit valider ?
+    "assignedTo" INTEGER REFERENCES "user"("id") -- Qui doit valider ?
 );
 
 -- 7. TABLE DOCUMENTS (GED / MODULE 6)
@@ -113,7 +123,7 @@ CREATE TABLE "documents" (
     "category" VARCHAR(50), -- Contrat, Rapport, Modèle
     "confidentialityLevel" VARCHAR(50) DEFAULT 'Interne',
     "uploadDate" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    "ownerId" INTEGER REFERENCES "users"("id"),
+    "ownerId" INTEGER REFERENCES "user"("id"),
     "conventionId" UUID REFERENCES "conventions"("id"), -- Lié à une convention ?
     "partnerId" UUID REFERENCES "partners"("id") -- Ou juste un partenaire ?
 );

@@ -1,0 +1,53 @@
+<div class="admin-container">
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <h2>ESPACE 2iE</h2>
+    </div>
+    <nav class="sidebar-nav">
+      
+      <a routerLink="/workspace/dashboard" routerLinkActive="active">
+        Tableau de bord
+      </a>
+      
+      <a routerLink="/workspace/my-conventions" routerLinkActive="active">
+        Mes Conventions
+      </a>
+
+      <a routerLink="/workspace/conventions" routerLinkActive="active">
+        Toutes les Conventions
+      </a>
+
+      <!-- Validation Section - Only for Validators -->
+      <a routerLink="/workspace/validation" routerLinkActive="active" *ngIf="isValidator()">
+        Menu Validation
+      </a>
+
+      <a routerLink="/workspace/partners" routerLinkActive="active">
+        Annuaire Partenaires
+      </a>
+
+      <a routerLink="/workspace/tasks" routerLinkActive="active">
+        Mes Tâches
+      </a>
+
+      <div class="divider"></div>
+      
+      <a (click)="authService.logout()" class="logout-link" style="cursor: pointer;">
+        Déconnexion
+      </a>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <header class="top-bar">
+      <div class="user-info">
+        <span class="role">{{ authService.getCurrentUserRole() }}</span>
+        <span class="name">{{ authService.getUserName() }}</span>
+      </div>
+    </header>
+    
+    <div class="content-wrapper">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+</div>

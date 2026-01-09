@@ -464,12 +464,26 @@ export class MyConventionsComponent implements OnInit {
     // Load user's assigned conventions from API
     this.conventionsService.findMyConventions().subscribe({
       next: (data) => {
+        console.log('[My Conventions] Data loaded:', data);
         this.conventions = data;
         this.loadPartnerNames();
         this.calculateStats();
         this.applyFilters();
       },
-      error: (err) => console.error('Erreur chargement conventions:', err)
+      error: (err) => {
+        console.error('[My Conventions] Error loading conventions:', err);
+        // Fallback to all conventions if /my endpoint fails
+        console.log('[My Conventions] Falling back to all conventions...');
+        this.conventionsService.findAll().subscribe({
+          next: (allConventions) => {
+            this.conventions = allConventions;
+            this.loadPartnerNames();
+            this.calculateStats();
+            this.applyFilters();
+          },
+          error: (fallbackErr) => console.error('[My Conventions] Fallback error:', fallbackErr)
+        });
+      }
     });
   }
 

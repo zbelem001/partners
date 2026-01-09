@@ -35,6 +35,7 @@ export class DashboardComponent implements OnInit {
   ];
 
   activities: Activity[] = [];
+  errorMessage: string = '';
 
   constructor(
     private prospectsService: ProspectsService,
@@ -43,33 +44,62 @@ export class DashboardComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    console.log('[Dashboard] Initializing...');
+    console.log('[Dashboard] API URLs:', {
+      prospects: 'http://localhost:3000/prospects',
+      partners: 'http://localhost:3000/partners',
+      conventions: 'http://localhost:3000/conventions'
+    });
+    
     // Use forkJoin to load all stats in parallel
     forkJoin({
       prospects: this.prospectsService.findAll(),
       partners: this.partnersService.findAll(),
       conventions: this.conventionsService.findAll()
-    }).subscribe(({ prospects, partners, conventions }) => {
+    }).subscribe({
+      next: ({ prospects, partners, conventions }) => {
+        console.log('[Dashboard] ✓ Data loaded successfully!');
+        console.log('[Dashboard] Prospects:', prospects);
+        console.log('[Dashboard] Partners:', partners);
+        console.log('[Dashboard] Conventions:', conventions);
       
-      // Calculate Stats
-      const totalProspects = prospects.length;
-      const pendingProspects = prospects.filter(p => p.status === 'New' || p.status === 'Pending').length;
-      const rejectedProspects = prospects.filter(p => p.status === 'Rejected').length;
-      const activePartners = partners.length; // Assuming all in Partners table are active
+        // Calculate Stats
+        const totalProspects = prospects.length;
+        // Case-insensitive check for pending status
+        const pendingProspects = prospects.filter(p => 
+          ['new', 'pending'].includes((p.status || '').toLowerCase())
+        ).length;
+        
+        const rejectedProspects = prospects.filter(p => 
+          (p.status || '').toLowerCase() === 'rejected'
+        ).length;
+        
+        const activePartners = partners.length; 
 
-      this.stats[0].value = totalProspects;
-      this.stats[1].value = pendingProspects;
-      this.stats[2].value = activePartners;
-      this.stats[3].value = rejectedProspects;
+        this.stats[0].value = totalProspects;
+        this.stats[1].value = pendingProspects;
+        this.stats[2].value = activePartners;
+        this.stats[3].value = rejectedProspects;
 
-      // Generate Recent Activity from Prospects (using submissionDate if avail, else top of list)
-      // Note: submissionDate might need to be added to Prospect interface if not present
-      this.activities = prospects
-        .slice(0, 5)
-        .map(p => ({
-          title: `Nouvelle demande - ${p.companyName}`,
-          time: 'Récemment', // We need real dates for better precision
-          type: this.mapStatusToType(p.status)
-        }));
+        // Generate Recent Activity
+        this.activities = prospects
+          .slice(0, 5)
+          .map(p => ({
+            title: `Nouvelle demande - ${p.companyName}`,
+            time: p.submissionDate ? new Date(p.submissionDate).toLocaleDateString() : 'Récemment',
+            type: this.mapStatusToType(p.status)
+          }));
+      },
+      error: (err) => {
+        console.error('[Dashboard] ✗ Error loading data:', err);
+        console.error('[Dashboard] Error details:', {
+          message: err.message,
+          status: err.status,
+          statusText: err.statusText,
+          url: err.url
+        });
+        this.errorMessage = `Erreur de connexion: ${err.status || 'Serveur inaccessible'}. Vérifiez que le backend est démarré sur http://localhost:3000`;
+      }
     });
   }
 

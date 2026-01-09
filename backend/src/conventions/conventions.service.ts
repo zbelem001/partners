@@ -20,7 +20,7 @@ export class ConventionsService {
     return this.conventionsRepository.find();
   }
 
-  findByResponsibleUser(userId: string) {
+  findByResponsibleUser(userId: number) {
     return this.conventionsRepository.find({
       where: { responsibleUserId: userId }
     });

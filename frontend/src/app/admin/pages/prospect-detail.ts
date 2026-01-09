@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
+import { ProspectsService } from '../../services/prospects.service';
 
 @Component({
   selector: 'app-prospect-detail',
@@ -11,50 +12,62 @@ import { ActivatedRoute, RouterModule, Router } from '@angular/router';
   styleUrl: './prospect-detail.scss',
 })
 export class ProspectDetailComponent implements OnInit {
-  prospect: any;
+  prospect: any = null;
   showRejectModal = false;
   rejectionReason = '';
 
-  constructor(private route: ActivatedRoute, private router: Router) {}
+  constructor(
+    private route: ActivatedRoute, 
+    private router: Router,
+    private prospectsService: ProspectsService
+  ) {}
 
   ngOnInit() {
-    // Simulation récupération données via ID
     const id = this.route.snapshot.paramMap.get('id');
-    this.prospect = {
-      id: id,
-      status: 'pending',
-      submissionDate: '09/01/2026',
-      structure: {
-        name: 'Orange Burkina',
-        type: 'Entreprise',
-        sector: 'Télécommunications',
-        country: 'Burkina Faso',
-        website: 'www.orange.bf',
-        creationYear: '2000'
+    if (id) {
+      this.loadProspect(id);
+    }
+  }
+
+  loadProspect(id: string) {
+    this.prospectsService.findOne(id).subscribe({
+      next: (data) => {
+        console.log('[Prospect Detail] Loaded:', data);
+        this.prospect = {
+          id: data.id,
+          status: data.status || 'pending',
+          submissionDate: data.submissionDate ? new Date(data.submissionDate).toLocaleDateString('fr-FR') : 'N/A',
+          structure: {
+            name: data.companyName,
+            type: data.type,
+            sector: data.sector,
+            country: data.country,
+            website: data.website,
+            creationYear: data.creationYear?.toString()
+          },
+          contacts: {
+            main: {
+              name: data.contactName,
+              position: data.position,
+              email: data.email,
+              phone: data.phone
+            }
+          },
+          collaboration: {
+            axes: data.collaborationAreas?.split(',').map((a: string) => a.trim()) || [],
+            type: data.agreementType,
+            project: data.description,
+            deadline: data.deadline
+          },
+          documents: []
+        };
       },
-      contacts: {
-        main: {
-          name: 'Jean Dupont',
-          position: 'Directeur RSE',
-          email: 'jean.dupont@orange.bf',
-          phone: '+226 70 00 00 00'
-        },
-        legal: {
-          name: 'Aminata Ouara',
-          email: 'legal@orange.bf'
-        }
-      },
-      collaboration: {
-        axes: ['Innovation', 'Stage/Emploi'],
-        type: 'Accord Cadre',
-        project: 'Mise en place d\'un laboratoire IoT pour les étudiants et programme de stages annuels.',
-        deadline: '3-6 mois'
-      },
-      documents: [
-        { name: 'Présentation_Orange.pdf', type: 'Présentation' },
-        { name: 'Statuts.pdf', type: 'Juridique' }
-      ]
-    };
+      error: (err) => {
+        console.error('[Prospect Detail] Error:', err);
+        alert('Erreur lors du chargement du prospect');
+        this.router.navigate(['/admin/prospects']);
+      }
+    });
   }
 
   approve() {

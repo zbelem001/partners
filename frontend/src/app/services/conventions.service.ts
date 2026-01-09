@@ -12,7 +12,7 @@ export interface Convention {
   startDate?: string;
   endDate?: string;
   progress?: number;
-  responsibleUserId?: string;
+  responsibleUserId?: number;
   createdAt?: string;
 }
 

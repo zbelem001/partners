@@ -10,7 +10,7 @@
       <div class="search-box">
         <input type="text" placeholder="Rechercher un document...">
       </div>
-      <button class="btn btn-primary">Uploader Fichier</button>
+      <button class="btn btn-primary" (click)="openUploadModal()">Uploader Fichier</button>
     </div>
   </div>
 
@@ -77,11 +77,87 @@
         </div>
 
         <!-- Add Card -->
-        <div class="file-card add-new">
+        <div class="file-card add-new" (click)="openUploadModal()">
           <div class="add-circle">+</div>
           <span>Ajouter</span>
         </div>
       </div>
     </main>
+  </div>
+
+  <!-- UPLOAD MODAL -->
+  <div class="modal-overlay" *ngIf="showUploadModal" (click)="closeUploadModal()">
+    <div class="modal-content upload-modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>Uploader un Document</h2>
+        <button class="btn-close" (click)="closeUploadModal()">×</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="upload-zone" 
+             [class.dragover]="isDragOver"
+             (dragover)="onDragOver($event)"
+             (dragleave)="onDragLeave($event)"
+             (drop)="onDrop($event)"
+             (click)="fileInput.click()">
+          <div class="upload-icon">📁</div>
+          <p class="upload-text">Glissez-déposez votre fichier ici ou cliquez pour parcourir</p>
+          <p class="upload-subtext">Formats acceptés: PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX (Max 10MB)</p>
+          <input #fileInput type="file" hidden (change)="onFileSelected($event)"
+                 accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx">
+        </div>
+
+        <div class="selected-file" *ngIf="selectedFile">
+          <div class="file-icon">📄</div>
+          <div class="file-details">
+            <strong>{{ selectedFile.name }}</strong>
+            <span>{{ formatFileSize(selectedFile.size) }}</span>
+          </div>
+          <button class="btn-remove" (click)="removeFile()">×</button>
+        </div>
+
+        <div class="form-group">
+          <label>Catégorie *</label>
+          <select [(ngModel)]="uploadCategory" class="form-select">
+            <option value="">Sélectionner une catégorie</option>
+            <option value="modele">Modèles & Templates</option>
+            <option value="signed">Conventions Signées</option>
+            <option value="report">Rapports d'Activités</option>
+            <option value="legal">Documents 2iE</option>
+            <option value="draft">Brouillons</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Niveau de confidentialité</label>
+          <select [(ngModel)]="uploadConfidentiality" class="form-select">
+            <option value="Public">Public</option>
+            <option value="Interne">Interne</option>
+            <option value="Confidentiel">Confidentiel</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Description (optionnel)</label>
+          <textarea [(ngModel)]="uploadDescription" class="form-textarea" rows="3"
+                    placeholder="Ajoutez une description du document..."></textarea>
+        </div>
+
+        <div class="upload-progress" *ngIf="isUploading">
+          <div class="progress-bar">
+            <div class="progress-fill" [style.width.%]="uploadProgress"></div>
+          </div>
+          <span class="progress-text">{{ uploadProgress }}%</span>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-outline" (click)="closeUploadModal()" [disabled]="isUploading">Annuler</button>
+        <button class="btn btn-primary" (click)="uploadFile()" 
+                [disabled]="!selectedFile || !uploadCategory || isUploading">
+          {{ isUploading ? 'Upload en cours...' : 'Uploader' }}
+        </button>
+      </div>
+    </div>
   </div>
 </div>

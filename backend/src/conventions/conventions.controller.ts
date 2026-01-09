@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request } from '@nestjs/common';
 import { ConventionsService } from './conventions.service';
-import { WorkflowService } from './workflow.service';
+import { WorkflowService, ValidationAction } from './workflow.service';
 import { CreateConventionDto } from './dto/create-convention.dto';
 import { UpdateConventionDto } from './dto/update-convention.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
@@ -67,7 +67,7 @@ export class ConventionsController {
       validatorRole,
       validatorId,
       validatorName,
-      body.action,
+      body.action as ValidationAction,
       body.comment
     );
   }

@@ -17,7 +17,7 @@ export class WorkflowStep {
   @Column({ length: 50, default: 'Pending' })
   status: string;
 
-  @Column({ type: 'datetime', nullable: true })
+  @Column({ type: 'timestamp', nullable: true })
   completedAt: Date;
 
   @Column({ nullable: true })

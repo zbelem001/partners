@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
+import { PartnersService } from '../../services/partners.service';
+import { ConventionsService } from '../../services/conventions.service';
 
 @Component({
   selector: 'app-partner-detail',
@@ -10,42 +12,71 @@ import { ActivatedRoute, RouterModule, Router } from '@angular/router';
   styleUrl: './partner-detail.scss',
 })
 export class PartnerDetailComponent implements OnInit {
-  partner: any;
+  partner: any = null;
   activeTab: string = 'overview';
 
-  constructor(private route: ActivatedRoute, private router: Router) {}
+  constructor(
+    private route: ActivatedRoute, 
+    private router: Router,
+    private partnersService: PartnersService,
+    private conventionsService: ConventionsService
+  ) {}
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
-    // Mock Data simulating a Partner fetched by ID
-    this.partner = {
-      id: id,
-      code: 'P-2024-042',
-      name: 'TotalEnergies',
-      classification: 'Stratégique',
-      status: 'Actif',
-      logo: 'assets/logos/total.png', // Placeholder
-      since: '12/03/2024',
-      generalInfo: {
-        website: 'www.totalenergies.com',
-        headquarters: 'Paris, France',
-        employeeCount: '100,000+',
-        revenue: '200 Mrd €',
-        sector: 'Énergie'
+    if (id) {
+      this.loadPartner(id);
+    }
+  }
+
+  loadPartner(id: string) {
+    this.partnersService.findOne(id).subscribe({
+      next: (data) => {
+        console.log('[Partner Detail] Loaded:', data);
+        this.partner = {
+          id: data.id,
+          code: data.ref,
+          name: data.name,
+          classification: data.type,
+          status: data.status,
+          logo: null,
+          since: data.createdAt ? new Date(data.createdAt).toLocaleDateString('fr-FR') : 'N/A',
+          generalInfo: {
+            website: data.website || 'N/A',
+            headquarters: data.country,
+            sector: data.domain
+          },
+          contacts: data.email ? [
+            { role: 'Contact principal', name: 'N/A', email: data.email, phone: 'N/A' }
+          ] : [],
+          conventions: [],
+          interactions: []
+        };
+        this.loadConventions(id);
       },
-      contacts: [
-        { role: 'Directeur RSE', name: 'Jean-Pierre Dupont', email: 'jp.dupont@total.com', phone: '+33 1 23 45 67 89' },
-        { role: 'Responsable Partenariats Afrique', name: 'Fatou Diop', email: 'f.diop@total.com', phone: '+221 77 000 00 00' }
-      ],
-      conventions: [
-        { id: 'C-001', title: 'Accord Cadre 2024-2028', status: 'Active', signDate: '12/03/2024', expireDate: '12/03/2028' },
-        { id: 'C-002', title: 'Avenant Financement Labo', status: 'En signature', signDate: '-', expireDate: '-' }
-      ],
-      interactions: [
-        { date: '10/01/2026', type: 'Réunion', note: 'Point trimestriel sur le programme de bourses.' },
-        { date: '15/12/2025', type: 'Email', note: 'Envoi du rapport annuel d\'activités.' }
-      ]
-    };
+      error: (err) => {
+        console.error('[Partner Detail] Error:', err);
+        alert('Erreur lors du chargement du partenaire');
+        this.router.navigate(['/admin/partners']);
+      }
+    });
+  }
+
+  loadConventions(partnerId: string) {
+    this.conventionsService.findAll().subscribe({
+      next: (conventions) => {
+        this.partner.conventions = conventions
+          .filter((c: any) => c.partnerId === partnerId)
+          .map((c: any) => ({
+            id: c.id,
+            title: c.ref + ' - ' + c.type,
+            status: c.status,
+            signDate: c.startDate ? new Date(c.startDate).toLocaleDateString('fr-FR') : '-',
+            expireDate: c.endDate ? new Date(c.endDate).toLocaleDateString('fr-FR') : '-'
+          }));
+      },
+      error: (err) => console.error('[Partner Detail] Error loading conventions:', err)
+    });
   }
 
   setActiveTab(tab: string) {

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
+import { ConventionsService } from '../../services/conventions.service';
+import { PartnersService } from '../../services/partners.service';
 
 interface Partenariat {
   id: string;
@@ -18,41 +20,65 @@ interface Partenariat {
   styleUrl: './convention-detail.scss',
 })
 export class ConventionDetailComponent implements OnInit {
-  convention: any;
+  convention: any = null;
   activeTab = 'details';
 
-  constructor(private route: ActivatedRoute, private router: Router) {}
+  constructor(
+    private route: ActivatedRoute, 
+    private router: Router,
+    private conventionsService: ConventionsService,
+    private partnersService: PartnersService
+  ) {}
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
-    // Simulated data fetching
-    this.convention = {
-      id: id,
-      ref: 'C-2026-001',
-      partnerName: 'TotalEnergies',
-      partnerId: '1',
-      type: 'Accord Cadre',
-      status: 'Active',
-      startDate: '01/02/2026',
-      endDate: '01/02/2030',
-      description: 'Partenariat stratégique global incluant formation, recherche et insertion professionnelle.',
-      objectives: 'Renforcer les capacités techniques des étudiants et développer des solutions énergétiques durables.',
-      workflow: {
-        currentStep: 4,
-        steps: [
-          { label: 'Draft', date: '10/01/2026', status: 'completed' },
-          { label: 'Validation RECIP', date: '15/01/2026', status: 'completed' },
-          { label: 'Validation Partenaire', date: '20/01/2026', status: 'completed' },
-          { label: 'Signatures', date: '01/02/2026', status: 'completed' },
-          { label: 'Archivage', date: '-', status: 'current' }
-        ]
+    if (id) {
+      this.loadConvention(id);
+    }
+  }
+
+  loadConvention(id: string) {
+    this.conventionsService.findOne(id).subscribe({
+      next: (data) => {
+        console.log('[Convention Detail] Loaded:', data);
+        this.convention = {
+          id: data.id,
+          ref: data.ref,
+          partnerName: 'Chargement...',
+          partnerId: data.partnerId,
+          type: data.type,
+          status: data.status,
+          startDate: data.startDate ? new Date(data.startDate).toLocaleDateString('fr-FR') : 'N/A',
+          endDate: data.endDate ? new Date(data.endDate).toLocaleDateString('fr-FR') : 'N/A',
+          description: data.objectives || 'Aucune description',
+          objectives: data.objectives || 'Aucun objectif défini',
+          workflow: {
+            currentStep: 0,
+            steps: []
+          },
+          partenariats: []
+        };
+        
+        if (data.partnerId) {
+          this.loadPartner(data.partnerId);
+        }
       },
-      // The 1-N relation: One Convention -> Many Partenariats (Projects/Actions)
-      partenariats: [
-        { id: 'P1', title: 'Programme Bourses d\'Excellence', domain: 'Formation', budget: '50M FCFA', status: 'En cours' },
-        { id: 'P2', title: 'Laboratoire Solaire Hybride', domain: 'Recherche & Innovation', budget: '120M FCFA', status: 'Planifié' },
-        { id: 'P3', title: 'Stages & Insertion 2026', domain: 'Employabilité', budget: 'N/A', status: 'En cours' }
-      ]
-    };
+      error: (err) => {
+        console.error('[Convention Detail] Error:', err);
+        alert('Erreur lors du chargement de la convention');
+        this.router.navigate(['/admin/conventions']);
+      }
+    });
+  }
+
+  loadPartner(partnerId: string) {
+    this.partnersService.findOne(partnerId).subscribe({
+      next: (partner) => {
+        if (this.convention) {
+          this.convention.partnerName = partner.name;
+        }
+      },
+      error: (err) => console.error('[Convention Detail] Error loading partner:', err)
+    });
   }
 }

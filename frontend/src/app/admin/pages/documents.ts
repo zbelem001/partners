@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { DocumentsService, Document } from '../../services/documents.service';
+import { ToastService } from '../../services/toast.service';
 
 interface DocFolder {
   id: string;
@@ -24,7 +26,7 @@ interface DocFile {
 @Component({
   selector: 'app-documents',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './documents.html',
   styleUrl: './documents.scss'
 })
@@ -40,9 +42,22 @@ export class DocumentsComponent implements OnInit {
   ];
 
   allFiles: DocFile[] = [];
-  files: DocFile[] = []; // Changed from 'filteredFiles' to 'files' to match template likely usage
+  files: DocFile[] = [];
 
-  constructor(private documentsService: DocumentsService) {}
+  // Upload modal state
+  showUploadModal = false;
+  selectedFile: File | null = null;
+  uploadCategory = '';
+  uploadConfidentiality = 'Interne';
+  uploadDescription = '';
+  isUploading = false;
+  uploadProgress = 0;
+  isDragOver = false;
+
+  constructor(
+    private documentsService: DocumentsService,
+    private toastService: ToastService
+  ) {}
 
   ngOnInit() {
     this.documentsService.findAll().subscribe(data => {
@@ -118,5 +133,131 @@ export class DocumentsComponent implements OnInit {
       case 'ZIP': return 'orange-icon';
       default: return 'gray-icon';
     }
+  }
+
+  // Upload modal methods
+  openUploadModal() {
+    this.showUploadModal = true;
+    this.resetUploadForm();
+  }
+
+  closeUploadModal() {
+    if (!this.isUploading) {
+      this.showUploadModal = false;
+      this.resetUploadForm();
+    }
+  }
+
+  resetUploadForm() {
+    this.selectedFile = null;
+    this.uploadCategory = '';
+    this.uploadConfidentiality = 'Interne';
+    this.uploadDescription = '';
+    this.uploadProgress = 0;
+  }
+
+  onDragOver(event: DragEvent) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.isDragOver = true;
+  }
+
+  onDragLeave(event: DragEvent) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.isDragOver = false;
+  }
+
+  onDrop(event: DragEvent) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.isDragOver = false;
+
+    const files = event.dataTransfer?.files;
+    if (files && files.length > 0) {
+      this.handleFile(files[0]);
+    }
+  }
+
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.handleFile(input.files[0]);
+    }
+  }
+
+  handleFile(file: File) {
+    // Validate file size (10MB max)
+    if (file.size > 10 * 1024 * 1024) {
+      this.toastService.error('Le fichier est trop volumineux (max 10MB)');
+      return;
+    }
+
+    // Validate file type
+    const allowedTypes = [
+      'application/pdf',
+      'application/msword',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      'application/vnd.ms-excel',
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      'application/vnd.ms-powerpoint',
+      'application/vnd.openxmlformats-officedocument.presentationml.presentation'
+    ];
+
+    if (!allowedTypes.includes(file.type)) {
+      this.toastService.error('Type de fichier non supporté');
+      return;
+    }
+
+    this.selectedFile = file;
+  }
+
+  removeFile() {
+    this.selectedFile = null;
+  }
+
+  formatFileSize(bytes: number): string {
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(2) + ' KB';
+    return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
+  }
+
+  uploadFile() {
+    if (!this.selectedFile || !this.uploadCategory) return;
+
+    this.isUploading = true;
+    const formData = new FormData();
+    formData.append('file', this.selectedFile);
+    formData.append('category', this.uploadCategory);
+    formData.append('confidentialityLevel', this.uploadConfidentiality);
+    formData.append('description', this.uploadDescription);
+
+    // Simulate upload progress
+    const interval = setInterval(() => {
+      this.uploadProgress += 10;
+      if (this.uploadProgress >= 90) {
+        clearInterval(interval);
+      }
+    }, 200);
+
+    this.documentsService.upload(formData).subscribe({
+      next: () => {
+        clearInterval(interval);
+        this.uploadProgress = 100;
+        setTimeout(() => {
+          this.isUploading = false;
+          this.toastService.success('Document uploadé avec succès');
+          this.closeUploadModal();
+          this.ngOnInit(); // Reload documents
+        }, 500);
+      },
+      error: (err: any) => {
+        clearInterval(interval);
+        this.isUploading = false;
+        this.uploadProgress = 0;
+        console.error('Upload error:', err);
+        this.toastService.error('Erreur lors de l\'upload du document');
+      }
+    });
   }
 }

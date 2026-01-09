@@ -5,39 +5,39 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ length: 100 })
   firstName: string;
 
-  @Column()
+  @Column({ length: 100 })
   lastName: string;
 
-  @Column({ type: 'varchar', unique: true, nullable: true })
+  @Column({ type: 'varchar', length: 50, unique: true, nullable: true })
   employeeId: string | null;
 
-  @Column({ unique: true })
+  @Column({ unique: true, length: 255 })
   email: string;
 
-  @Column()
-  role: string; // Admin, Direction, Manager
+  @Column({ length: 50 })
+  role: string; // Admin, SRECIP, DFC, CAQ, DG, Manager, User, Viewer
 
-  @Column()
+  @Column({ length: 100 })
   department: string;
 
-  @Column({ type: 'varchar', nullable: true })
+  @Column({ type: 'varchar', length: 50, nullable: true })
   phone: string | null;
 
   @Column('text', { nullable: true })
   bio: string | null;
 
-  @Column({ default: 'Active' })
+  @Column({ length: 50, default: 'Active' })
   status: string;
 
-  @Column({ type: 'varchar', nullable: true })
+  @Column({ type: 'varchar', length: 255, nullable: true })
   passwordHash: string | null; // Store hashed passwords, not plain text!
 
   @CreateDateColumn()
   createdAt: Date;
 
-  @Column({ type: 'datetime', nullable: true })
+  @Column({ type: 'timestamp', nullable: true })
   lastLogin: Date | null;
 }

@@ -58,7 +58,7 @@ export class WorkflowService {
 
     // Start validation workflow
     convention.validationStatus = ValidationStatus.PENDING_SRECIP;
-    convention.currentValidatorRole = ValidatorRole.SRECIP;
+    convention.currentValidatorRole = ValidatorRole.SRECIP as string;
 
     await this.conventionsRepository.save(convention);
 
@@ -107,12 +107,12 @@ export class WorkflowService {
       convention.currentValidatorRole = null;
     } else if (action === ValidationAction.APPROVE) {
       // Move to next step
-      const nextStep = this.getNextStep(convention.validationStatus);
+      const nextStep = this.getNextStep(convention.validationStatus as ValidationStatus);
       
       if (nextStep) {
         toStatus = nextStep.status;
         convention.validationStatus = toStatus;
-        convention.currentValidatorRole = nextStep.nextRole;
+        convention.currentValidatorRole = nextStep.nextRole as string;
       } else {
         // Final approval
         toStatus = ValidationStatus.APPROVED;

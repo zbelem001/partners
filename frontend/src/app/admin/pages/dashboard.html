@@ -4,6 +4,10 @@
     <p>Bienvenue dans l'espace de gestion des partenariats.</p>
   </div>
 
+  <div class="error-message" *ngIf="errorMessage" style="background: #fee; border: 1px solid #c00; padding: 15px; margin: 20px 0; border-radius: 5px; color: #c00;">
+    <strong>⚠ Erreur:</strong> {{ errorMessage }}
+  </div>
+
   <div class="stats-grid">
     <div class="stat-card" *ngFor="let stat of stats" [ngClass]="stat.type">
       <div class="stat-content">

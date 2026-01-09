@@ -12,8 +12,19 @@ export class ProspectsService {
     private prospectRepository: Repository<Prospect>,
   ) {}
 
-  create(createProspectDto: CreateProspectDto) {
-    return this.prospectRepository.save(createProspectDto);
+  async create(createProspectDto: CreateProspectDto) {
+    // Generate a reference for the prospect (e.g., PR-2026-1234)
+    const year = new Date().getFullYear();
+    const count = await this.prospectRepository.count();
+    const reference = `PR-${year}-${(count + 1).toString().padStart(3, '0')}`;
+
+    const newProspect = this.prospectRepository.create({
+      ...createProspectDto,
+      reference,
+      submissionDate: new Date(),
+    });
+
+    return this.prospectRepository.save(newProspect);
   }
 
   findAll() {

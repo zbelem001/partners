@@ -1,9 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { PermissionsService, Permission } from '../../../services/permissions.service';
 import { HasPermissionDirective } from '../../../directives/has-permission.directive';
 import { HasRoleDirective } from '../../../directives/has-role.directive';
+import { ConventionsService } from '../../../services/conventions.service';
+import { PartnersService } from '../../../services/partners.service';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-workspace-dashboard',
@@ -21,7 +24,7 @@ import { HasRoleDirective } from '../../../directives/has-role.directive';
       <div class="stat-card">
         <div class="icon-bg blue"></div>
         <div class="stat-info">
-          <span class="value">4</span>
+          <span class="value">{{ stats.conventions }}</span>
           <span class="label">Conventions Actives</span>
         </div>
       </div>
@@ -29,7 +32,7 @@ import { HasRoleDirective } from '../../../directives/has-role.directive';
       <div class="stat-card">
         <div class="icon-bg orange"></div>
         <div class="stat-info">
-          <span class="value">2</span>
+          <span class="value">{{ stats.pendingTasks }}</span>
           <span class="label">Actions en attente</span>
         </div>
       </div>
@@ -37,8 +40,8 @@ import { HasRoleDirective } from '../../../directives/has-role.directive';
       <div class="stat-card">
         <div class="icon-bg green"></div>
         <div class="stat-info">
-          <span class="value">12</span>
-          <span class="label">Tâches terminées</span>
+          <span class="value">{{ stats.partners }}</span>
+          <span class="label">Partenaires</span>
         </div>
       </div>
 
@@ -170,8 +173,42 @@ import { HasRoleDirective } from '../../../directives/has-role.directive';
     }
   `]
 })
-export class WorkspaceDashboardComponent {
-  Permission = Permission; // Expose enum au template
+export class WorkspaceDashboardComponent implements OnInit {
+  Permission = Permission;
   
-  constructor(public permissionsService: PermissionsService) {}
+  stats = {
+    conventions: 0,
+    pendingTasks: 0,
+    partners: 0
+  };
+  
+  constructor(
+    public permissionsService: PermissionsService,
+    private conventionsService: ConventionsService,
+    private partnersService: PartnersService
+  ) {}
+
+  ngOnInit() {
+    console.log('[Workspace Dashboard] Loading data...');
+    
+    forkJoin({
+      conventions: this.conventionsService.findAll(),
+      partners: this.partnersService.findAll()
+    }).subscribe({
+      next: ({ conventions, partners }) => {
+        console.log('[Workspace Dashboard] Data loaded:', { conventions, partners });
+        
+        this.stats.conventions = conventions.filter(c => 
+          c.status?.toLowerCase() === 'active'
+        ).length;
+        this.stats.partners = partners.length;
+        this.stats.pendingTasks = 0; // TODO: Implémenter quand le module Tasks sera prêt
+        
+        console.log('[Workspace Dashboard] Stats:', this.stats);
+      },
+      error: (err) => {
+        console.error('[Workspace Dashboard] Error loading data:', err);
+      }
+    });
+  }
 }
