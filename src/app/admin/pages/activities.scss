@@ -1,0 +1,270 @@
+/* --- Layout & Typography --- */
+.activities-page {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  h1 {
+    font-size: 1.8rem;
+    color: var(--text-dark);
+    margin-bottom: 0.5rem;
+  }
+  
+  p { color: var(--text-light); }
+
+  .header-right {
+    display: flex;
+    gap: 1rem;
+    
+    .btn {
+      padding: 0.6rem 1.2rem;
+      border-radius: 6px;
+      font-weight: 500;
+      cursor: pointer;
+      border: 1px solid transparent;
+      
+      &.btn-primary {
+        background: var(--primary-color);
+        color: white;
+      }
+      
+      &.btn-outline {
+        border-color: #ddd;
+        background: transparent;
+        color: #666;
+        &:hover { border-color: var(--primary-color); color: var(--primary-color); }
+      }
+    }
+  }
+}
+
+/* --- Alerts Section --- */
+.alerts-section {
+  h3 {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    color: #444;
+  }
+}
+
+.alerts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+}
+
+.alert-card {
+  display: flex;
+  align-items: flex-start;
+  padding: 1rem;
+  border-radius: 8px;
+  background: white;
+  border-left: 4px solid #ddd;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+
+  .alert-icon {
+    font-size: 1.2rem;
+    margin-right: 1rem;
+    min-width: 24px;
+    text-align: center;
+  }
+
+  .alert-content {
+    flex: 1;
+    
+    .alert-message {
+      display: block;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 0.4rem;
+      font-size: 0.95rem;
+    }
+
+    .alert-meta {
+      display: flex;
+      gap: 1rem;
+      font-size: 0.8rem;
+      color: #777;
+    }
+  }
+
+  .btn-sm {
+    padding: 0.3rem 0.8rem;
+    font-size: 0.8rem;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    &:hover { background: #f5f5f5; }
+  }
+
+  /* Alert Types */
+  &.alert-critical {
+    border-left-color: #e74c3c;
+    background: #fdf3f2;
+    .alert-icon { color: #e74c3c; }
+    .alert-message { color: #c0392b; }
+  }
+
+  &.alert-warning {
+    border-left-color: #f1c40f;
+    background: #fcfaf2;
+    .alert-icon { color: #f39c12; }
+  }
+
+  &.alert-info {
+    border-left-color: #3498db;
+    background: #f0f7fb;
+    .alert-icon { color: #2980b9; }
+  }
+}
+
+/* --- Content Split (Roadmaps & Jalons) --- */
+.content-split {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+}
+
+.card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    
+    h3 { font-size: 1.1rem; color: #2c3e50; margin: 0; }
+    .view-all { font-size: 0.85rem; color: var(--primary-color); text-decoration: none; }
+  }
+}
+
+/* Roadmap List */
+.roadmap-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.roadmap-item {
+  display: grid;
+  grid-template-columns: 2fr 2fr 2fr auto;
+  align-items: center;
+  gap: 1.5rem;
+  padding-bottom: 1.2rem;
+  border-bottom: 1px solid #eee;
+  
+  &:last-child { border-bottom: none; padding-bottom: 0; }
+
+  .roadmap-info {
+    h4 { font-size: 0.95rem; margin-bottom: 0.2rem; color: #333; }
+    .partner-name { font-size: 0.85rem; color: #888; }
+  }
+
+  .roadmap-progress {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    
+    .progress-bar {
+      flex: 1;
+      height: 6px;
+      background: #eee;
+      border-radius: 3px;
+      overflow: hidden;
+      
+      .fill {
+        height: 100%;
+        background: var(--primary-green);
+        border-radius: 3px;
+      }
+    }
+    .percent { font-size: 0.85rem; color: #666; font-weight: 600; min-width: 35px; }
+  }
+
+  .roadmap-next {
+    display: flex;
+    flex-direction: column;
+    font-size: 0.85rem;
+    
+    .label { color: #999; font-size: 0.75rem; }
+    .value { font-weight: 500; color: #333; }
+    .due-date { color: var(--accent-color); font-size: 0.8rem; }
+  }
+
+  .btn-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: none;
+    background: #f5f5f5;
+    color: #999;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    
+    &:hover {
+      background: var(--primary-blue);
+      color: white;
+    }
+  }
+}
+
+/* Jalons List */
+.jalons-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.jalon-item {
+  display: flex;
+  gap: 1rem;
+  
+  .date-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 54px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #eee;
+    
+    .day { font-size: 1.2rem; font-weight: 700; color: #333; line-height: 1; }
+    .month { font-size: 0.7rem; text-transform: uppercase; color: #666; margin-top: 2px; }
+  }
+  
+  .jalon-details {
+    display: flex;
+    flex-direction: column;
+    
+    .jalon-title { font-size: 0.9rem; font-weight: 600; color: #333; margin-bottom: 2px; }
+    .jalon-ref { font-size: 0.8rem; color: #888; margin-bottom: 4px; }
+    
+    .status-badge {
+      display: inline-block;
+      align-self: flex-start;
+      font-size: 0.7rem;
+      padding: 0.1rem 0.6rem;
+      border-radius: 12px;
+      
+      &.badge-success { background: rgba(46, 204, 113, 0.15); color: #27ae60; }
+      &.badge-blue { background: rgba(52, 152, 219, 0.15); color: #2980b9; }
+      &.badge-danger { background: rgba(231, 76, 60, 0.15); color: #c0392b; }
+    }
+  }
+}

@@ -16,6 +16,18 @@
       <a routerLink="/admin/conventions" routerLinkActive="active">
         Conventions
       </a>
+      <a routerLink="/admin/activities" routerLinkActive="active">
+        Suivi Activités
+      </a>
+      <a routerLink="/admin/documents" routerLinkActive="active">
+        Bibliothèque
+      </a>
+      <a routerLink="/admin/reports" routerLinkActive="active">
+        Rapports
+      </a>
+      <a routerLink="/admin/users" routerLinkActive="active">
+        Utilisateurs
+      </a>
       <div class="divider"></div>
       <a routerLink="/login" class="logout-link">
         Déconnexion
@@ -27,7 +39,9 @@
     <header class="top-bar">
       <div class="user-info">
         <span class="role">Administrateur</span>
-        <span class="name">Adama Ouedraogo</span>
+        <a routerLink="/admin/profile" class="name-link">
+          <span class="name">Adama Ouedraogo</span>
+        </a>
       </div>
     </header>
     

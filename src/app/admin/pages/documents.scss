@@ -1,0 +1,293 @@
+/* --- Global Layout --- */
+.documents-page {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  height: calc(100vh - 120px); /* Adjust based on top bar height */
+  overflow: hidden;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  h1 { margin-bottom: 0.5rem; font-size: 1.8rem; color: var(--text-dark); }
+  p { color: var(--text-light); }
+
+  .header-right {
+    display: flex;
+    gap: 1rem;
+
+    .search-box {
+      input {
+        padding: 0.6rem 1rem;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        min-width: 250px;
+        font-family: inherit;
+        &:focus { border-color: var(--primary-color); outline: none; }
+      }
+    }
+
+    .btn-primary {
+      padding: 0.6rem 1.2rem;
+      background: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 500;
+      &:hover { background: #00284d; }
+    }
+  }
+}
+
+/* --- Main Layout --- */
+.doc-layout {
+  display: flex;
+  gap: 20px;
+  flex: 1;
+  overflow: hidden; /* Scroll inside panes */
+}
+
+/* --- Sidebar --- */
+.doc-sidebar {
+  width: 250px;
+  background: white;
+  border-right: 1px solid #eee;
+  padding: 1rem 1rem 1rem 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.folder-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.folder-item {
+  display: flex;
+  align-items: center;
+  padding: 0.8rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #555;
+
+  &:hover { background: #f5f5f5; color: #333; }
+  &.active { background: #e3f2fd; color: var(--primary-color); font-weight: 600; }
+
+  .folder-icon { margin-right: 10px; font-size: 1.1rem; }
+  .folder-name { flex: 1; font-size: 0.95rem; }
+  .folder-count { font-size: 0.8rem; color: #999; background: #fff; padding: 2px 8px; border-radius: 10px; border: 1px solid #eee; }
+}
+
+.storage-info {
+  background: #f8f9fa;
+  padding: 1rem;
+  border-radius: 8px;
+  
+  h3 { font-size: 0.85rem; color: #666; margin-bottom: 0.8rem; text-transform: uppercase; }
+  
+  .progress-bar {
+    height: 6px;
+    background: #e0e0e0;
+    border-radius: 3px;
+    margin-bottom: 0.5rem;
+    overflow: hidden;
+    
+    .fill { height: 100%; background: var(--accent-color); }
+  }
+  
+  .stats { font-size: 0.8rem; color: #888; text-align: right; }
+}
+
+/* --- File Area --- */
+.file-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+.filters-bar {
+  display: flex;
+  align-items: center;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 1.5rem;
+  gap: 1rem;
+
+  .filter-label { color: #888; font-size: 0.9rem; }
+  
+  select {
+    padding: 0.4rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    color: #444;
+  }
+
+  .view-toggle {
+    margin-left: auto;
+    display: flex;
+    background: #f0f0f0;
+    padding: 2px;
+    border-radius: 4px;
+    
+    button {
+      border: none;
+      background: transparent;
+      padding: 0.4rem 0.8rem;
+      font-size: 0.85rem;
+      cursor: pointer;
+      border-radius: 3px;
+      color: #777;
+      
+      &.active { background: white; color: #333; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    }
+  }
+}
+
+/* --- Grid --- */
+.file-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1.5rem;
+  padding-bottom: 2rem;
+}
+
+.file-card {
+  background: white;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  padding: 1rem;
+  transition: all 0.2s;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    border-color: #e0e0e0;
+  }
+
+  &.add-new {
+    border: 2px dashed #ddd;
+    align-items: center;
+    justify-content: center;
+    color: #999;
+    gap: 0.5rem;
+    min-height: 200px;
+    
+    .add-circle {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #f5f5f5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      color: #aaa;
+    }
+    
+    &:hover { border-color: var(--primary-color); color: var(--primary-color); .add-circle { background: #e3f2fd; color: var(--primary-color); } }
+  }
+
+  .card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    
+    .confidentiality-tag {
+      font-size: 0.65rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 600;
+      text-transform: uppercase;
+      
+      &.badge-red { background: #ffebee; color: #c62828; }
+      &.badge-blue { background: #e3f2fd; color: #1565c0; }
+      &.badge-green { background: #e8f5e9; color: #2e7d32; }
+    }
+
+    .menu-dots {
+      background: none;
+      border: none;
+      font-size: 1.2rem;
+      color: #999;
+      cursor: pointer;
+      line-height: 0.5;
+    }
+  }
+
+  .file-preview {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    min-height: 60px;
+
+    .type-badge {
+      width: 50px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 1rem;
+      border-radius: 6px;
+      background: #f5f5f5;
+      color: #666;
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
+      position: relative;
+      
+      /* Corner fold effect */
+      &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 15px;
+        height: 15px;
+        background: #e0e0e0;
+        border-bottom-left-radius: 4px;
+      }
+
+      &.red-icon { color: #d32f2f; background: #ffebee; }
+      &.blue-icon { color: #1976d2; background: #e3f2fd; }
+      &.green-icon { color: #388e3c; background: #e8f5e9; }
+      &.orange-icon { color: #f57c00; background: #fff3e0; }
+    }
+  }
+
+  .file-info {
+    .file-name {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #333;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 0.3rem;
+    }
+    
+    .file-meta {
+      font-size: 0.75rem;
+      color: #888;
+      margin-bottom: 0.3rem;
+    }
+    
+    .file-owner {
+      font-size: 0.7rem;
+      color: #999;
+    }
+  }
+}

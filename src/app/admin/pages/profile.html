@@ -1,0 +1,103 @@
+<div class="profile-page">
+  
+  <div class="page-header">
+    <h1>Mon Profil</h1>
+    <p>Gérez vos informations personnelles et votre sécurité</p>
+  </div>
+
+  <div class="alert-success" *ngIf="successMessage">
+    {{ successMessage }}
+  </div>
+
+  <div class="profile-grid">
+    
+    <!-- LEFT: Personal Info -->
+    <div class="card profile-info-card">
+      <div class="card-header">
+        <h3>Informations Personnelles</h3>
+        <button class="btn-link" (click)="toggleEdit()">
+          {{ isEditing ? 'Annuler' : 'Modifier' }}
+        </button>
+      </div>
+
+      <div class="avatar-section">
+        <div class="avatar-circle">AO</div>
+        <div class="avatar-text">
+          <span class="role-badge">{{ user.role }}</span>
+          <span class="dept">{{ user.department }}</span>
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Prénom</label>
+          <input type="text" [(ngModel)]="user.firstName" [disabled]="!isEditing">
+        </div>
+        <div class="form-group">
+          <label>Nom</label>
+          <input type="text" [(ngModel)]="user.lastName" [disabled]="!isEditing">
+        </div>
+        <div class="form-group full-width">
+          <label>Email Professionnel</label>
+          <input type="email" [(ngModel)]="user.email" disabled class="readonly-field" title="Contactez l'admin pour changer">
+        </div>
+        <div class="form-group full-width">
+          <label>Téléphone</label>
+          <input type="tel" [(ngModel)]="user.phone" [disabled]="!isEditing">
+        </div>
+        <div class="form-group full-width">
+          <label>Bio / Poste</label>
+          <textarea [(ngModel)]="user.bio" [disabled]="!isEditing" rows="3"></textarea>
+        </div>
+      </div>
+
+      <div class="card-actions" *ngIf="isEditing">
+        <button class="btn btn-primary" (click)="saveProfile()">Enregistrer les modifications</button>
+      </div>
+    </div>
+
+    <!-- RIGHT: Security & Password -->
+    <div class="side-column">
+      <div class="card security-card">
+        <h3>Sécurité & Mot de Passe</h3>
+        <p class="text-sm">Pour votre sécurité, utilisez un mot de passe fort (min. 8 caractères).</p>
+        
+        <form (submit)="changePassword()" class="security-form">
+          <div class="form-group">
+            <label>Mot de passe actuel</label>
+            <input type="password" [(ngModel)]="passwordForm.current" name="current" required>
+          </div>
+          <div class="form-group">
+            <label>Nouveau mot de passe</label>
+            <input type="password" [(ngModel)]="passwordForm.new" name="new" required>
+          </div>
+          <div class="form-group">
+            <label>Confirmer nouveau mot de passe</label>
+            <input type="password" [(ngModel)]="passwordForm.confirm" name="confirm" required>
+          </div>
+          
+          <button type="submit" class="btn btn-outline full-width">Mettre à jour le mot de passe</button>
+        </form>
+      </div>
+
+      <div class="card preferences-card">
+        <h3>Préférences</h3>
+        <div class="pref-item">
+          <label class="switch-container">
+            <span>Notifications Email</span>
+            <input type="checkbox" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="pref-item">
+          <label class="switch-container">
+            <span>Rapports Hebdomadaires</span>
+            <input type="checkbox">
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

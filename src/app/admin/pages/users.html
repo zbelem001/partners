@@ -1,0 +1,55 @@
+<div class="users-page">
+  
+  <div class="page-header">
+    <div class="header-left">
+      <h1>Gestion des Utilisateurs</h1>
+      <p>Administrez les accès et les rôles de la plateforme</p>
+    </div>
+    <div class="header-right">
+      <div class="search-box">
+        <input type="text" placeholder="Rechercher un utilisateur...">
+      </div>
+      <button class="btn btn-primary">+ Nouvel Utilisateur</button>
+    </div>
+  </div>
+
+  <div class="table-container">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Nom & Email</th>
+          <th>Rôle</th>
+          <th>Département</th>
+          <th>Statut</th>
+          <th>Dernière Connexion</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users">
+          <td>
+            <div class="user-info">
+              <span class="name">{{ user.name }}</span>
+              <span class="email">{{ user.email }}</span>
+            </div>
+          </td>
+          <td>
+            <span class="badge" [ngClass]="getRoleBadge(user.role)">{{ user.role }}</span>
+          </td>
+          <td>{{ user.department }}</td>
+          <td>
+            <span class="status-dot" [class.active]="user.status === 'Active'"></span>
+            {{ user.status }}
+          </td>
+          <td class="text-muted">{{ user.lastLogin }}</td>
+          <td>
+            <div class="actions">
+              <button class="btn-icon edit" title="Modifier">✎</button>
+              <button class="btn-icon delete" title="Supprimer" (click)="deleteUser(user.id)">🗑</button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

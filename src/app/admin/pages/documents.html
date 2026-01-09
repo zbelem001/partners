@@ -1,0 +1,87 @@
+<div class="documents-page">
+  
+  <!-- HEADER -->
+  <div class="page-header">
+    <div class="header-left">
+      <h1>Gestion Documentaire</h1>
+      <p>Bibliothèque centrale et modèles validés</p>
+    </div>
+    <div class="header-right">
+      <div class="search-box">
+        <input type="text" placeholder="Rechercher un document...">
+      </div>
+      <button class="btn btn-primary">Uploader Fichier</button>
+    </div>
+  </div>
+
+  <div class="doc-layout">
+    
+    <!-- SIDEBAR FOLDERS -->
+    <aside class="doc-sidebar">
+      <div class="folder-list">
+        <div class="folder-item" *ngFor="let folder of folders" 
+             [class.active]="folder.active" 
+             (click)="selectFolder(folder.id)">
+          <span class="folder-icon">📂</span>
+          <span class="folder-name">{{ folder.name }}</span>
+          <span class="folder-count">{{ folder.count }}</span>
+        </div>
+      </div>
+
+      <div class="storage-info">
+        <h3>Espace de stockage</h3>
+        <div class="progress-bar">
+          <div class="fill" style="width: 65%"></div>
+        </div>
+        <div class="stats">6.5 GB utilisés / 10 GB</div>
+      </div>
+    </aside>
+
+    <!-- FILE GRID -->
+    <main class="file-area">
+      <div class="filters-bar">
+        <span class="filter-label">Trier par:</span>
+        <select>
+          <option>Plus récents</option>
+          <option>Nom (A-Z)</option>
+          <option>Taille</option>
+        </select>
+        <div class="view-toggle">
+          <button class="active">Grille</button>
+          <button>Liste</button>
+        </div>
+      </div>
+
+      <div class="file-grid">
+        <div class="file-card" *ngFor="let file of files">
+          <div class="card-top">
+            <span class="confidentiality-tag" [ngClass]="getLevelBadge(file.level)">
+              {{ file.level }}
+            </span>
+            <button class="menu-dots">⋮</button>
+          </div>
+          
+          <div class="file-preview">
+            <div class="type-badge" [ngClass]="getTypeColor(file.type)">
+              {{ file.type }}
+            </div>
+          </div>
+
+          <div class="file-info">
+            <div class="file-name" title="{{ file.name }}">{{ file.name }}</div>
+            <div class="file-meta">
+              <span>{{ file.size }}</span> • <span>{{ file.date }}</span>
+            </div>
+            <div class="file-owner">Par: {{ file.owner }}</div>
+          </div>
+        </div>
+
+        <!-- Add Card -->
+        <div class="file-card add-new">
+          <div class="add-circle">+</div>
+          <span>Ajouter</span>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>

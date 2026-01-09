@@ -1,0 +1,97 @@
+<div class="activities-page">
+  
+  <div class="page-header">
+    <div class="header-left">
+      <h1>Suivi des Activités</h1>
+      <p>Pilotage opérationnel : Feuilles de route, Jalons et Alertes</p>
+    </div>
+    <div class="header-right">
+      <button class="btn btn-outline">Exporter Rapport</button>
+      <button class="btn btn-primary">+ Nouvelle Activité</button>
+    </div>
+  </div>
+
+  <!-- SECTION 1: ALERTES ET NOTIFICATIONS -->
+  <div class="alerts-section" *ngIf="alerts.length > 0">
+    <h3>Alertes & Actions Requises</h3>
+    <div class="alerts-grid">
+      <div class="alert-card" *ngFor="let alert of alerts" [ngClass]="getAlertClass(alert.type)">
+        <div class="alert-icon">
+          <span *ngIf="alert.type === 'critical'">!</span>
+          <span *ngIf="alert.type === 'warning'">⚠️</span>
+          <span *ngIf="alert.type === 'info'">i</span>
+        </div>
+        <div class="alert-content">
+          <span class="alert-message">{{ alert.message }}</span>
+          <div class="alert-meta">
+            <span class="ref">{{ alert.conventionRef }}</span>
+            <span class="date">{{ alert.date }}</span>
+          </div>
+        </div>
+        <div class="alert-action">
+          <button class="btn-sm">Traiter</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-split">
+    
+    <!-- SECTION 2: FEUILLES DE ROUTE (ROADMAPS) -->
+    <div class="main-column">
+      <div class="card">
+        <div class="card-header">
+          <h3>Feuilles de Route Actives</h3>
+          <a href="#" class="view-all">Tout voir</a>
+        </div>
+        <div class="roadmap-list">
+          <div class="roadmap-item" *ngFor="let map of roadmaps">
+            <div class="roadmap-info">
+              <h4>{{ map.convention }}</h4>
+              <span class="partner-name">{{ map.partner }}</span>
+            </div>
+            <div class="roadmap-progress">
+              <div class="progress-bar">
+                <div class="fill" [style.width.%]="map.progress"></div>
+              </div>
+              <span class="percent">{{ map.progress }}%</span>
+            </div>
+            <div class="roadmap-next">
+              <span class="label">Prochaine étape :</span>
+              <span class="value">{{ map.nextAction }}</span>
+              <span class="due-date">({{ map.dueDate }})</span>
+            </div>
+            <div class="roadmap-action">
+              <button class="btn-icon">➜</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 3: PROCHAINS JALONS (AGENDA) -->
+    <div class="side-column">
+      <div class="card">
+        <div class="card-header">
+          <h3>Agenda / Jalons</h3>
+        </div>
+        <div class="jalons-list">
+          <div class="jalon-item" *ngFor="let jalon of jalons">
+            <div class="date-box">
+              <span class="day">{{ jalon.date.split(' ')[0] }}</span>
+              <span class="month">{{ jalon.date.split(' ')[1] }}</span>
+            </div>
+            <div class="jalon-details">
+              <span class="jalon-title">{{ jalon.title }}</span>
+              <span class="jalon-ref">{{ jalon.convention }}</span>
+              <span class="status-badge" [ngClass]="getStatusBadge(jalon.status)">
+                {{ getStatusLabel(jalon.status) }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

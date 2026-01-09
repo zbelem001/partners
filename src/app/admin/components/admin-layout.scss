@@ -98,6 +98,18 @@
       letter-spacing: 0.5px;
     }
     
+    .name-link {
+        text-decoration: none;
+        color: inherit;
+        display: block;
+        transition: color 0.2s;
+        
+        &:hover .name {
+          color: var(--primary-color);
+          text-decoration: underline;
+        }
+    }
+
     .name {
       display: block;
       font-weight: 600;
